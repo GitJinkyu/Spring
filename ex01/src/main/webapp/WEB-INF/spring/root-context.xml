@@ -27,5 +27,24 @@
 	
 	<mybatis-spring:scan base-package="com.momo.mapper"/>
 	
+	<!-- File Upload 를 위한 세팅 -->
+	<!-- commons-fileupload, io 를 maven 세팅 필요 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	    <!-- 업로드 파일 인코딩 -->
+	    <property name="defaultEncoding" value="utf-8"></property>
+	    <!--최대 업로드 수치(bytes) : 1024 * 1024 * 10 bytes  100MB -->
+	    <property name="maxUploadSize" value="104857560"></property>
+	    <!--한 파일당 최대 크기 1024 * 1024 * 2 bytes  2MB -->
+	    <property name="maxUploadSizePerFile" value="2097152"></property>
+	    <!-- 파일업로드 경로 -->
+	    <property name="uploadTempDir" value ="file:/C:/upload/tmp"></property>
+	    <!-- 디스크에 저장하지 않고 메모리에 유지하도록 허용하는 크기 이 이상은 파일로 저장 -->
+	    <property name="maxInMemorySize" value="10485756"></property>
+	</bean>
+	
+	
+
+	
+	
 	
 </beans>

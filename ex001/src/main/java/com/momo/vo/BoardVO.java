@@ -3,7 +3,7 @@ package com.momo.vo;
 import lombok.Data;
 
 @Data
-public class Board {
+public class BoardVO {
 	private int bno;
 	private String title;
 	private String content;

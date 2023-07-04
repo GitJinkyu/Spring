@@ -14,7 +14,7 @@ public class FileuploadController {
 	/**
 	 * 메서드의 리턴타입
 	 * 
-	 * 	String
+	 * String
 	 * 		/WEB-INF/views/반환값.jsp 응답페이지 주소
 	 * 		servlet-context.xml에 정의되어 있음.
 	 * 

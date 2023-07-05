@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mybatis 샘플코드에서 아래 두줄 가져와야함 -->
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+					<!-- mapper경로랑 똑같이 해줘야함  -->
+<mapper namespace="com.jinkyu.mapper.sampleMapper">
+
+	<select id="getTime2" resultType="String">
+		select sysdate||'[xml파일연동]' from dual
+	</select>
+
+	<select id="getmember" resultType="String">
+		select id from member
+	</select>
+	
+	<delete id="deletemember" >
+		delete from member where id='guest2'
+	</delete>
+</mapper>

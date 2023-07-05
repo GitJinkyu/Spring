@@ -23,10 +23,6 @@
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
 		</init-param>
 		
-	<servlet-mapping>
-		<servlet-name>appServlet</servlet-name>
-		<url-pattern>/</url-pattern>
-	</servlet-mapping>
 	
 		<!-- 404와 같은 WAS내부 예외를 처리 하기 위한 설정 -->
 		<init-param>
@@ -36,6 +32,11 @@
 		
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>appServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
 	
 	<!-- 필터를 활용한 인코딩 설정 -->
 	<filter>

@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.momo.service.BoardService;
 import com.momo.vo.BoardVO;
 
-import jdk.internal.org.jline.utils.Log;
+
 import lombok.extern.log4j.Log4j;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -27,7 +27,7 @@ public class BoardServiceTest {
 		List<BoardVO> list = boardService.getListXml();
 		
 		list.forEach(board->{
-			Log.info(board);
+			log.info(board);
 		});
 	}
 	

@@ -25,17 +25,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-
-
 <%@include file = "../common/header.jsp" %>
-
-<script type="text/javascript">
-
-function requestAction(url){
-	viewForm.action=url;
-	viewForm.submit();
-}
-</script>
  
  	<div class="bg-light p-5 rounded">
 	    <h1>게시판</h1>
@@ -47,26 +37,27 @@ function requestAction(url){
 	  
 <div class="mb-3" style="margin: 3rem;">
 	  <!-- 글쓰기 -->
-	<form method="get" name="viewForm">
+	<form method="get" action="/board/edit?bno=${view.bno }">
+	
+		<input type="text" name="bno" value = "${view.bno }">
 		
-		<input type="text" name="bno" value="${board.bno }">
 		<div class="mb-3">
 		  <label for="title" class="form-label">제목</label>
-		  <input name="title" type="text" class="form-control" id="title" value="${board.title }" readonly>
+		  <input name="title" type="text" class="form-control" id="title" value=${view.title } >
 		</div>
 		
 		<div class="mb-3">
 		  <label for="content" class="form-label">내용</label>
-		  <textarea name="content" class="form-control" id="content" rows="3" readonly>${board.content }</textarea>
+		  <textarea name="content" class="form-control" id="content" rows="3" >${view.content }</textarea>
 		</div>
 		
 		<div class="mb-3">
 			<label for="writer" class="form-label">작성자</label>
-		    <input name="writer" type="text" class="form-control" id="writer" value="${board.writer }" readonly>
+		    <input name="writer" type="text" class="form-control" id="writer" value=${view.writer } >
 			</div>
 		<div class="d-grid gap-2 d-md-flex justify-content-md-center">
-			<button type="submit" class="btn btn-primary btn-lg" onclick="requestAction('/board/edit')">수정</button>
-			<button type="submit" class="btn btn-primary btn-lg" onclick="requestAction('/board/delete')">삭제</button>
+			<button type="submit" class="btn btn-primary btn-lg">글 수정</button>
+			<button type="reset" class="btn btn-secondary btn-lg">초기화</button>
 		</div>
 		
 	</form>

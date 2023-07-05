@@ -20,9 +20,9 @@
 	
 	 -->
 	<select id="getListXml" resultType="com.momo.vo.BoardVO">
-	<![CDATA[
-		select * from tbl_board
-	]]> 
+
+	select bno,title,content,writer,DECODE(TRUNC(sysdate), TRUNC(regdate), TO_CHAR(regdate, 'HH24:MI:SS'), TO_CHAR(regdate, 'YYYY-MM-DD')) AS regdate, updatedate from tbl_board order by bno desc
+	
 	</select>
 	
 	<!-- 

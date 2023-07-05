@@ -43,8 +43,8 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public int insert(BoardVO boardvo) {
-		int res = boardMapper.insert(boardvo);
-		return 0;
+	
+		return  boardMapper.insert(boardvo);
 	}
 
 	@Override

@@ -65,7 +65,7 @@ function requestAction(url){
 		    <input name="writer" type="text" class="form-control" id="writer" value="${board.writer }" readonly>
 			</div>
 		<div class="d-grid gap-2 d-md-flex justify-content-md-center">
-			<button type="submit" class="btn btn-primary btn-lg" onclick="requestAction('/board/edit')">수정</button>
+			<button type="submit" class="btn btn-primary btn-lg" onclick="requestAction('/board/write')">수정</button>
 			<button type="submit" class="btn btn-primary btn-lg" onclick="requestAction('/board/delete')">삭제</button>
 		</div>
 		

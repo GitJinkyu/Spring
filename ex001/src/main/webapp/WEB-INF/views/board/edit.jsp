@@ -37,23 +37,22 @@
 	  
 <div class="mb-3" style="margin: 3rem;">
 	  <!-- 글쓰기 -->
-	<form method="get" action="/board/edit?bno=${view.bno }">
+	<form method="post" action="/board/edit?bno=${board.bno }">
 	
-		<input type="text" name="bno" value = "${view.bno }">
-		
+		<input type="text" name="bno" value = "${board.bno }">
 		<div class="mb-3">
 		  <label for="title" class="form-label">제목</label>
-		  <input name="title" type="text" class="form-control" id="title" value=${view.title } >
+		  <input name="title" type="text" class="form-control" id="title" value="${board.title }" >
 		</div>
 		
 		<div class="mb-3">
 		  <label for="content" class="form-label">내용</label>
-		  <textarea name="content" class="form-control" id="content" rows="3" >${view.content }</textarea>
+		  <textarea name="content" class="form-control" id="content" rows="3" >${board.content }</textarea>
 		</div>
 		
 		<div class="mb-3">
 			<label for="writer" class="form-label">작성자</label>
-		    <input name="writer" type="text" class="form-control" id="writer" value=${view.writer } >
+		    <input name="writer" type="text" class="form-control" id="writer" value="${board.writer }" >
 			</div>
 		<div class="d-grid gap-2 d-md-flex justify-content-md-center">
 			<button type="submit" class="btn btn-primary btn-lg">글 수정</button>

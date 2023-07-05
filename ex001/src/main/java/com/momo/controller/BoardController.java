@@ -51,12 +51,12 @@ public class BoardController {
 	
 		log.info("=========================");
 		BoardVO board = boardService.getOne(paramVO.getBno());
-		model.addAttribute("view",board);
+		model.addAttribute("board",board);
 	}
 	
 	@GetMapping("write")
-	public void write(Model model) {
-		
+	public void write(Model model,BoardVO paramVO) {
+		model.addAttribute("board",boardService.getOne(paramVO.getBno()));
 	}
 	
 	/**
@@ -98,18 +98,13 @@ public class BoardController {
 		
 	}
 	
-	@GetMapping("edit")
-	public String edit(Model model,BoardVO paramVO) {
-		
-		log.info("=========================");
-		
-		model.addAttribute("view",boardService.getOne(paramVO.getBno()));
-		
-		return "/board/write";
-	}
 	
 	@PostMapping("edit")
 	public String editAction(RedirectAttributes rttr ,BoardVO board,Model model) {
+		System.out.println("==========================================");
+		System.out.println("================포스트 에딧 진입=================");
+		System.out.println("==========================================");
+		
 		log.info(board);
 		//board.getBno로 값을 가져오기 위해 insertSelectKey를 써야함
 		//시퀀스를 먼저 조회후 시퀀스 번호를 bno에 저장 하고 난 후에 실행함

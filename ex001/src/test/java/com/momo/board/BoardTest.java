@@ -10,9 +10,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.ui.Model;
 
 import com.momo.mapper.BoardMapper;
 import com.momo.vo.BoardVO;
+import com.momo.vo.Criteria;
 
 import lombok.extern.log4j.Log4j;
 
@@ -42,8 +44,8 @@ public class BoardTest {
 	}
 	
 	@Test
-	public void getListXml() {
-		List<BoardVO> list = boardMapper.getListXml();
+	public void getListXml(Model model,Criteria cri) {
+		List<BoardVO> list = boardMapper.getListXml(cri);
 		
 		list.forEach(board->{
 			log.info("boardVO================");
@@ -117,8 +119,8 @@ public class BoardTest {
 	}
 	
 	@Test
-	public void getTotalCnt() {
-		int res = boardMapper.getTotalCnt();
+	public void getTotalCnt(Criteria cri) {
+		int res = boardMapper.getTotalCnt(cri);
 		
 		log.info("TotalCnt = "+res);
 	}

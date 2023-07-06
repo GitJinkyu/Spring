@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.momo.service.BoardService;
 import com.momo.vo.BoardVO;
+import com.momo.vo.Criteria;
 
 import lombok.extern.log4j.Log4j;
 
@@ -36,13 +37,19 @@ public class BoardController {
 	@Autowired
 	BoardService boardService;
 	
-	@GetMapping("list")
-	public void getList(Model model) {
-		List<BoardVO> list = boardService.getListXml();
-		log.info("=========================");
-		log.info(list);
-		model.addAttribute("list",list);
 	
+	/**
+	 * 파라메터의 자동수집
+	 * 기본생성자를 이용해서 객체를 생성
+	 * ->넘어온 값들을 자동으로 setter 메서드를 이용해서 세팅한다
+	 * 
+	 * @param model
+	 * @param cri
+	 */
+	@GetMapping("list")
+	public void getList(Model model, Criteria cri) {
+		boardService.getListXml(cri,model);
+
 	}
 	
 	
@@ -98,6 +105,12 @@ public class BoardController {
 		
 	}
 	
+	@GetMapping("edit")
+	public String edit(Model model,BoardVO paramVO) {
+		model.addAttribute("board",boardService.getOne(paramVO.getBno()));
+		
+		return "/board/write";
+	}
 	
 	@PostMapping("edit")
 	public String editAction(RedirectAttributes rttr ,BoardVO board,Model model) {
@@ -106,8 +119,7 @@ public class BoardController {
 		System.out.println("==========================================");
 		
 		log.info(board);
-		//board.getBno로 값을 가져오기 위해 insertSelectKey를 써야함
-		//시퀀스를 먼저 조회후 시퀀스 번호를 bno에 저장 하고 난 후에 실행함
+
 		int res = boardService.update(board);
 		System.out.println(res);
 		String msg = "";
@@ -124,13 +136,27 @@ public class BoardController {
 			//잠깐 쓰고 사라지기때문에 새로고침시 유지되지않음
 			rttr.addFlashAttribute("msg",msg);
 			
-			return "redirect:/board/list";
+			return "redirect:/board/view?bno="+board.getBno();
 			
 		}else {
 			msg="수정중 오류가 발생하였습니다.";
 			model.addAttribute("msg",msg);
 			return "/board/message";
 		}
+	}
+	
+	@GetMapping("delete")
+	public String delete(RedirectAttributes rttr ,BoardVO board,Model model) {
 		
+		int res = boardService.delete(board.getBno());
+		
+		if(res > 0) {
+			
+			rttr.addFlashAttribute("msg","삭제 되었습니다.");
+			return "redirect:/board/list";
+		}else {
+			model.addAttribute("msg","삭제중 예외가 발생하였습니다.");
+			return "/board/message";
+		}
 	}
 }

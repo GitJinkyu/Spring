@@ -22,61 +22,23 @@
     
 	<link href="/resources/css/style.css" rel="stylesheet">
 
-<script type="text/javascript">
 
-// 메세지 처리
-/*
-   		부트스트랩을 이용한 모달창 띄우기
- 		
- 		1. css,js 링크 추가하기
- 		2. 모달요소 복사
- 			타이틀,메세지 수정
- 		3. 모달창 열기(message.jsp가 호출되자마자 버튼 뜨게)
- 			자바스크립트를 이용해서 모달 객체 생성 후 show()메서드 호출해서 바로 보여줌
- 		4. 모달창 닫기 (닫기 버튼 and 배경화면 아무곳 누르기)
- 			자바스크립트를 이용해서 모달차을 닫을 경우
- 			닫는 이벤트 발생(hidden.bs.modal)->
-			그후 뒤로가기(history(-1)) 추가
- */
- 
-
-let msg = '${msg}';
-
-window.onload = function(){
-	if(msg != ''){
-		document.querySelector(".modal-body").innerHTML = msg;
-		
-		let myModal = new bootstrap.Modal('#myModal', {keyboard: false});
-		myModal.show();
-	
-	}
-}
-</script>
 </head>
 <body>
 	    
 	<%@include file = "../common/header.jsp" %>
 	
-	<!-- Modal -->
-	<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	      </div>
-	      <div class="modal-body">
-	       
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-	        <button type="button" class="btn btn-primary">확인</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+<script type="text/javascript">
+
+	function requestAction(url, bno){
+		// 폼이름을 확인!
+		searchForm.action = url;
+		searchForm.bno.value = bno;
+		searchForm.submit();
+	}
 	
-	
+</script>
+
 	<main class="container">
 	
 	  <div class="bg-light p-5 rounded">
@@ -87,11 +49,14 @@ window.onload = function(){
 	  
 	  <p></p>
 	
+	<%@include file = "../common/searchForm.jsp" %>
 	 
 	  <c:forEach var="board" items="${list}">
 		  <div class="list-group w-auto">
-		    <a href="/board/view?bno=${board.bno }" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-		      <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
+		  
+<%-- 		    <a href="/board/view?bno=${board.bno }&pageNo=${pageDto.cri.pageNo }&searchField=${pageDto.cri.searchField }&searchWord=${pageDto.cri.searchWord }" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true"> --%>
+		    <a onclick="requestAction('/board/view', ${board.bno })" href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+		      <img src="https://i.namu.wiki/i/Kv4XGIiFUBtg3Ewl7iDR2gSsSuObZWwSu2igXJVNixUdkhW79upJ4XyWOpFgDEiyk8y_sCe9CLpN-qr9R1qsNg.webp" alt="twbs" width="42" height="42" class="rounded-circle flex-shrink-0">
 		      <div class="d-flex gap-2 w-100 justify-content-between">
 		        <div>
 		          <h6 class="mb-0">${board.title }</h6>
@@ -103,14 +68,10 @@ window.onload = function(){
 		  </div>
 	  </c:forEach>
 	  
-	</main> 
- 	<table width="100%">
-		<tr>
-			<td >
+	  		<!-- 페이지 불러오기 -->
 			<%@include file = "../common/pageNavi.jsp" %>
-			</td>
-		</tr>
-	</table>
+	</main> 
+
 	
       
       

@@ -21,11 +21,11 @@
 	<link href="/resources/css/style.css" rel="stylesheet">
 
 
-    
 <title>Insert title here</title>
 </head>
-<body>
 
+
+<body>
 
 <%@include file = "../common/header.jsp" %>
 
@@ -38,9 +38,9 @@ function requestAction(url){
 </script>
  
  	<div class="bg-light p-5 rounded">
-	    <h1>게시판</h1>
-	    <p class="lead">부트스트랩을 이용한 게시판 만들기</p>
-	    <a class="btn btn-lg btn-primary" href="/board/list" role="button">리스트 &raquo;</a>
+	    <h1>게시판 상세보기</h1>
+	    <p class="lead">부트스트랩을 이용한 게시판 만들기</p>	    												   
+	    <a class="btn btn-lg btn-primary" href="/board/list?pageNo=${param.pageNo }&searchField=${param.searchField }&searchWord=${param.searchWord }" role="button">리스트 &raquo;</a>
 	</div>
 	  
 	  <p></p>
@@ -49,7 +49,11 @@ function requestAction(url){
 	  <!-- 글쓰기 -->
 	<form method="get" name="viewForm">
 		
-		<input type="text" name="bno" value="${board.bno }">
+		<div class="list-group w-auto">
+			<img src="https://i.namu.wiki/i/Kv4XGIiFUBtg3Ewl7iDR2gSsSuObZWwSu2igXJVNixUdkhW79upJ4XyWOpFgDEiyk8y_sCe9CLpN-qr9R1qsNg.webp" alt="twbs" width="45" height="45" class="rounded-circle flex-shrink-0">
+		</div>
+		<br>
+		<input type="hidden" name="bno" value="${board.bno }">
 		<div class="mb-3">
 		  <label for="title" class="form-label">제목</label>
 		  <input name="title" type="text" class="form-control" id="title" value="${board.title }" readonly>

@@ -23,6 +23,7 @@ public class BoardServiceTest {
 	@Autowired
 	BoardService boardService;
 	
+	//테스트 메서드에는 매개변수가 있으면 안된다.밑에는 임시로 넣어놓은것
 	@Test
 	public void getListXml(Criteria cri,Model model) {
 		List<BoardVO> list = boardService.getListXml(cri, model);

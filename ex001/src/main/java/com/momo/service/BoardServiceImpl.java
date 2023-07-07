@@ -57,7 +57,9 @@ public class BoardServiceImpl implements BoardService{
 		model.addAttribute("totalCnt",totalCnt);
 		model.addAttribute("pageDto",pageDto);
 		
-		return boardMapper.getListXml(cri);
+		return list;
+		
+		
 	}
 
 	@Override

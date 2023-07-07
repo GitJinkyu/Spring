@@ -14,6 +14,7 @@ public class Criteria {
 	private int startNo = 1;
 	private int endNo 	= 10;
 
+	//pageNo 값만 바뀌어도 endNo,startNo가 같이 바뀜
 	public void setPageNo(int pageNo) {
 		this.pageNo = pageNo;
 		if(pageNo>0) {

@@ -17,6 +17,7 @@
 		
 		//마지막요소일때 ',' 제거
 		delNo = delNo.substr(0,delNo.length-1);
+		delNo = parseInt(delNo);
 		
 		console.log("삭제할번호 : " + delNo);
 		//삭제요청
@@ -26,7 +27,11 @@
 		searchForm.delNo.value=delNo;
 		searchForm.submit();
 		
-	}
+	} 
+	
+ 
+	
+	
 	
 	function allCheck() {
 		  // 체크박스의 상태를 확인하고 원하는 동작을 수행합니다.

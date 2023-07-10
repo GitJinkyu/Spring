@@ -54,7 +54,7 @@
 	
 	
 	<delete id="delete" >
-	delete from book where no=#{no} 
+	delete from book where no in (#{no}) 
 	</delete>
 	
 	

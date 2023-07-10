@@ -50,7 +50,7 @@ public class bookController {
 		
 		if(res>0) {
 			
-			msg = no+"번 삭제되었습니다.";
+			msg = delNo+"번 삭제되었습니다.";
 		
 			//rttr.addAttribute는 
 			//url?msg=등록되었습니다 (쿼리스트링으로 전환됨. 화면에서 받을때 param.으로 받아야함)

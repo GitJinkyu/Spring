@@ -22,6 +22,13 @@ import lombok.extern.log4j.Log4j;
 @RequestMapping("/board/*")
 @Log4j
 public class BoardController {
+	
+	@GetMapping("/reply/test")
+	public String test() {
+		
+		return "/reply/test";
+		
+	}
 
 	@GetMapping("message")
 	public void message(Model model) {

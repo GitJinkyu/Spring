@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.momo.service.ReplyService;
+import com.momo.vo.Criteria;
+import com.momo.vo.PageDto;
 import com.momo.vo.ReplyVO;
 
 import lombok.extern.log4j.Log4j;
@@ -41,22 +43,40 @@ public class ReplyController {
 	 * PathVariable
 	 * 		URL 경로에 있는 값을 파라미터로 추출하려고 할때 사용
 	 * 		경로의 특정 부분을 파라메터로 사용
+	 * 		{ }로 묶어줘야함
+	 * 
 	 * @return
 	 */
-	@GetMapping("/reply/list/{bno}")
-	public List<ReplyVO> getList(@PathVariable("bno") int bno){
+	@GetMapping("/reply/list/{bno}/{page}")
+	public Map<String,Object> getList(@PathVariable("bno") int bno,@PathVariable("page") int page){
+		
+		Map<String,Object> map = new HashMap<String, Object>();
 		
 		log.info("bno : "+bno);
+		log.info("page : "+page);
 		
-		return service.getList(bno);
+		Criteria cri =  new Criteria();
+		cri.setPageNo(page);
+		
+		//페이지 처리 (시작번호~끝번호)
+		List<ReplyVO> list =service.getList(bno, cri);
+		int totalCnt = service.totalCnt(bno);
+		
+		//페이지 블럭을 생성
+		PageDto pageDto = new PageDto(cri, totalCnt) ;
+		
+		map.put("list", list);
+		map.put("pageDto",pageDto);
+		
+		return map;
 	}
 	
 	@GetMapping("/reply/delete/{rno}")
 	public Map<String,Object> delete(@PathVariable("rno")int rno) {
 		
-		int res = service.delete(rno);
-		
 		Map<String,Object> map = new HashMap<String, Object>();
+		
+		int res = service.delete(rno);
 		
 		if(res > 0) {
 			map.put("result", "success");
@@ -95,4 +115,23 @@ public class ReplyController {
 		
 	}
 	
+	@PostMapping("/reply/update/")
+	public Map<String,Object> update(@RequestBody ReplyVO vo) {
+		
+		log.info("replyVO :"+vo);
+		
+		int res = service.update(vo);
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		if(res > 0) {
+			map.put("result", "success");
+		}else {
+			map.put("result", "fail");
+			map.put("message", "댓글 수정중 예외가 발생하였습니다.");
+		}
+		
+		return map;
+		
+	}
 }

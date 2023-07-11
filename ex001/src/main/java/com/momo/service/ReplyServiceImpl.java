@@ -2,10 +2,12 @@ package com.momo.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.momo.mapper.ReplyMapper;
+import com.momo.vo.Criteria;
 import com.momo.vo.ReplyVO;
 
 @Service
@@ -15,9 +17,9 @@ public class ReplyServiceImpl implements ReplyService {
 	ReplyMapper replyMapper;
 	
 	@Override
-	public List<ReplyVO> getList(int bno) {
+	public List<ReplyVO> getList(@Param(value="bno") int bno,@Param(value="cri")Criteria cri) {
 	
-		return replyMapper.getList(bno);
+		return replyMapper.getList(bno,cri);
 	}
 
 	@Override
@@ -33,9 +35,15 @@ public class ReplyServiceImpl implements ReplyService {
 	}
 
 	@Override
-	public int edit(ReplyVO vo) {
+	public int update(ReplyVO vo) {
 
-		return replyMapper.edit(vo);
+		return replyMapper.update(vo);
+	}
+
+	@Override
+	public int totalCnt(int bno) {
+		
+		return replyMapper.totalCnt(bno);
 	}
 	
 

@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.momo.book.BookMapperTest;
 import com.momo.mapper.ReplyMapper;
+import com.momo.vo.Criteria;
 import com.momo.vo.ReplyVO;
 
 import lombok.extern.log4j.Log4j;
@@ -29,7 +30,11 @@ public class ReplyMapperTest {
 	@Test
 	public void test() {
 		assertNotNull(mapper);
-		List<ReplyVO> list = mapper.getList(148);
+		Criteria cri = new Criteria();
+		cri.setAmount(5);
+		cri.setPageNo(1);
+		
+		List<ReplyVO> list = mapper.getList(148,cri);
 		
 		log.info(list);
 	}
@@ -55,5 +60,25 @@ public class ReplyMapperTest {
 		int res = mapper.delete(rno);
 		
 		assertEquals(res, 1);
+	}
+	
+	@Test
+	public void updateTest() {
+		ReplyVO vo = new ReplyVO();
+		
+		vo.setRno(24);
+		vo.setReply("댓글수정");
+		
+		int res = mapper.update(vo);
+		
+		assertEquals(res, 1);
+		
+	}
+	
+	@Test
+	public void totalCnt() {
+		int res = mapper.totalCnt(148);
+		
+		System.out.println(res);
 	}
 }

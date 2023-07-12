@@ -10,8 +10,8 @@
 
 	<form class="row g-3" action="/board/list" name="searchForm">
 	
-	<input type="text" class="form-control" name="bno" id="bno" >
-	<input type="text" class="form-control" name="pageNo" id="pageNo" value="${pageDto.cri.pageNo }">
+	<input type="hidden" class="form-control" name="bno" id="bno" >
+	<input type="hidden" class="form-control" name="pageNo" id="pageNo" value="${pageDto.cri.pageNo }">
 	<div class="row g-3 justify-content-center">
 	  <div class="col-auto">
 	  

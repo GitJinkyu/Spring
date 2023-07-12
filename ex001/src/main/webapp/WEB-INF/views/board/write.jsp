@@ -49,6 +49,10 @@ function requestAction(url){
 <div class="mb-3" style="margin: 3rem;">
 	  <!-- 글쓰기 -->
 	<form method="post" name="writeForm">
+			<input type="text" name="pageNo" value="${param.pageNo }">
+			<input type="text" name="searchField" value="${param.searchField }">
+			<input type="text" name="searchWord" value="${param.searchWord }">
+
 	
 	<c:if test="${not empty board.bno}">
   		<input type="text" name="bno" value="${board.bno}">
@@ -76,7 +80,7 @@ function requestAction(url){
 			<button type="submit" class="btn btn-primary btn-lg" onclick="requestAction('/board/write')">글쓰기</button>			
 		  </c:when>
 		  <c:otherwise>
-			<button type="submit" class="btn btn-primary btn-lg" onclick="requestAction('/board/edit')">수정</button>
+			<button type="submit" class="btn btn-primary btn-lg" onclick="requestAction('/board/edit')">수정완료</button>
 		  </c:otherwise>
 		</c:choose>
 			<button type="reset" class="btn btn-secondary btn-lg">초기화</button>

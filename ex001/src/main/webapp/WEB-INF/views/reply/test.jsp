@@ -9,7 +9,6 @@
 <script src="https://kit.fontawesome.com/ba30180671.js"
 	crossorigin="anonymous"></script>
 <script>
-
 window.onload = function() {
 	
 	//화면이 띄워지면 바로 리스트가 보일수있도록 리스트 출력 함수를 호출
@@ -45,7 +44,9 @@ window.onload = function() {
 		
 		fetchPost('/reply/insert/', replyObj,replyWriteRes);
 		
-		/* fetch('/reply/insert/',{method : 'post'
+		/* 
+		이부분을 fetchPost함수로 만들어놓음
+		fetch('/reply/insert/',{method : 'post'
 								,headers : {'Content-Type' : 'application/json'}
 								,body  : replyJson})
 		
@@ -60,6 +61,7 @@ window.onload = function() {
 
 //1. 서버에 댓글 리스트 요청
 function getList(){
+	//댓글을 보여줄 게시물
 	let bno = document.querySelector('#bno').value;
 	let page = document.querySelector('#page').value;
 	
@@ -137,6 +139,7 @@ function replyView(map){
 	  		  '    <li class="page-item '+activeStr+'">'
 	  		 + '<a class="page-link" href="#" onclick="getPage('+i+')">'+i+'</a></li>';
 	};
+	
 	if(pageDto.next){
 		let disableStr = (pageDto.next) ? '':'disabled';
 	pageBlock += //next 버튼
@@ -188,7 +191,7 @@ function replyEditAction(rno){
 	
 	//1.서버에 전송할 파라메터 수집
 	let bno = document.querySelector('#bno').value;
-	let reply= document.querySelector('#editReply'+rno).value;
+	let reply = document.querySelector('#editReply'+rno).value;
 	let replyer = document.querySelector('#replyer').value;
 	
 	console.log('bno',bno);
@@ -222,6 +225,7 @@ function replyEditAction(rno){
 	
 }
 
+//get방식 요청
 function fetchGet(url,callback){
 	console.log(url);
 	console.log(callback);
@@ -242,6 +246,7 @@ function fetchGet(url,callback){
 	
 }
 
+//post방식 요청
 function fetchPost(url,obj,callback){
 	console.log(url);
 	console.log(callback);
@@ -279,12 +284,16 @@ function fetchPost(url,obj,callback){
 
 
 	<h2>댓글창</h2>
-	<input type="hidden" id="page" name="page" value=1> 닉네임:
-	<input type="text" id="replyer">
-
+	<input type="hidden" id="bno" name="bno" value=148> 
+	<input type="hidden" id="page" name="page" value=1> 
+	<!-- 닉네임:<input type="text" id="replyer"> -->
+	<input type="text" id="replyer" class="form-control"
+			placeholder="닉네임" aria-label="Recipient's username"
+			aria-describedby="basic-addon2"  style="width: 100px; text-align: center;">
+	<br>
 	<div class="input-group mb-3">
 		<input type="text" id="reply" class="form-control"
-			placeholder="Recipient's username" aria-label="Recipient's username"
+			placeholder="댓글을 입력하세요" aria-label="Recipient's username"
 			aria-describedby="basic-addon2"> <span
 			class="input-group-text" id="btnwrite">댓글작성</span>
 	</div>

@@ -147,7 +147,7 @@ window.onload = function(){
                                 </tbody>
                             </table>
                             <%@include file = "./pageNavi.jsp" %>
-							<%@include file = "../reply/test.jsp" %>
+							
                         </div>
                         <!-- /.panel-body -->
                     </div>

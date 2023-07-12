@@ -59,8 +59,8 @@
 		      <img src="https://i.namu.wiki/i/Kv4XGIiFUBtg3Ewl7iDR2gSsSuObZWwSu2igXJVNixUdkhW79upJ4XyWOpFgDEiyk8y_sCe9CLpN-qr9R1qsNg.webp" alt="twbs" width="42" height="42" class="rounded-circle flex-shrink-0">
 		      <div class="d-flex gap-2 w-100 justify-content-between">
 		        <div>
-		          <h6 class="mb-0">${board.title }</h6>
 		          <p class="mb-0 opacity-75">작성자 : ${board.writer }</p>
+		          <h6 class="mb-0">${board.title }</h6>
 		        </div>
 		        <small class="opacity-50 text-nowrap">등록일 : ${board.regDate }</small>
 		      </div>

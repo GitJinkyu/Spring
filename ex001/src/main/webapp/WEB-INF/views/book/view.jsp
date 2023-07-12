@@ -22,7 +22,7 @@
                 <b>도서 작가 </b><br>
                 ${book.author }
                 </div>
-                <%@include file = "../reply/test.jsp" %>
+          
             </div>
         </div>
 	</div>    

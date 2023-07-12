@@ -144,7 +144,7 @@ public class BoardController {
 			rttr.addFlashAttribute("msg",msg);
 			
 			//검색키워드 페이지 유지하고 돌아가기 구현 안됨
-			return "redirect:/board/view?bno="+board.getBno();
+			return "redirect:/board/view?bno="+board.getBno()+"&pageNo="+cri.getPageNo()+"&searchField="+cri.getSearchField()+"&searchWord="+cri.getSearchWord();
 
 			//리턴 그냥 경로를 적으면 컨트롤을 거치지않고 해당 경로내의 .jsp를 바로 호출함
 			//return "/board/list";

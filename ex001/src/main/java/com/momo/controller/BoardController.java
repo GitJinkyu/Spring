@@ -30,6 +30,7 @@ public class BoardController {
 		
 	}
 
+
 	@GetMapping("message")
 	public void message(Model model) {
 		
@@ -125,6 +126,17 @@ public class BoardController {
 		System.out.println("================포스트 에딧 진입=================");
 		System.out.println("==========================================");
 		
+		/* 값 주고 받는 종류 차이를 알아야함
+		 * request.getParam("pageNo"); 
+		 * request.setAttr(""); 
+		 * ${param.pageNo}
+		 * 
+		 * request.getAttr(""); 
+		 * session.setAttr(""); 
+		 * ${pageNo}
+		 */
+		
+		
 		log.info(board);
 
 		int res = boardService.update(board);
@@ -137,19 +149,24 @@ public class BoardController {
 		
 			//rttr.addAttribute는 
 			//url?msg=등록되었습니다 (쿼리스트링으로 전환됨. 화면에서 받을때 param.으로 받아야함)
-			//rttr.addAttribute("msg",msg);
 			
 			//세션영역에 잠시 저장 -> param. 안붙이고 msg로 호출 가능
 			//잠깐 쓰고 사라지기때문에 새로고침시 유지되지않음
 			rttr.addFlashAttribute("msg",msg);
+			//rttr.addFlashAttribute("cri",cri);
 			
-			//검색키워드 페이지 유지하고 돌아가기 구현 안됨
-			return "redirect:/board/view?bno="+board.getBno()+"&pageNo="+cri.getPageNo()+"&searchField="+cri.getSearchField()+"&searchWord="+cri.getSearchWord();
+			//검색키워드 페이지 유지하고 돌아가기 구현
+			//유지하기위해선 jsp에서 보낸 검색 및 페이지 정보 파라미터를 매개변수 cri로 받고 
+			//cri로 받은 파라미터를 다시 addAttribute에 저장해서 화면으로 보내줄때 사용
+			rttr.addAttribute("pageNo",cri.getPageNo());
+			rttr.addAttribute("searchField",cri.getSearchField());
+			rttr.addAttribute("searchWord",cri.getSearchWord());
+			
+			return "redirect:/board/view?bno="+board.getBno();
+			//return "redirect:/board/view?bno="+board.getBno()+"&pageNo="+cri.getPageNo()+"&searchField="+cri.getSearchField()+"&searchWord="+cri.getSearchWord();
 
 			//리턴 그냥 경로를 적으면 컨트롤을 거치지않고 해당 경로내의 .jsp를 바로 호출함
-			//return "/board/list";
-			
-		
+			//return "/board/view";
 			
 		}else {
 			msg="수정중 오류가 발생하였습니다.";

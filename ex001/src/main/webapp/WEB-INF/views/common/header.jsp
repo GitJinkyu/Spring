@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,9 +22,16 @@
 	        <li class="nav-item">
 	          <a class="nav-link" href="/book/list">도서관</a>
 	        </li>
-	        <li class="nav-item">
-	          <a class="nav-link disabled">Disabled</a>
-	        </li>
+	        <c:if test="${empty sessionScope.userId}">
+			    <li class="nav-item">
+			        <a class="nav-link" href="/member/login">로그인</a>
+			    </li>
+			</c:if>
+			<c:if test="${not empty sessionScope.userId}">
+			    <li class="nav-item">
+			        <a class="nav-link" href="/member/logout">로그아웃</a>
+			    </li>
+			</c:if>
 	      </ul>
 	      <form class="d-flex" role="search">
 	        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

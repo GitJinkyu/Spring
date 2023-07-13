@@ -84,7 +84,7 @@ window.addEventListener('load', function() {
 			<input type="text" name="pageNo" value="${param.pageNo }">
 			<input type="text" name="searchField" value="${param.searchField }">
 			<input type="text" name="searchWord" value="${param.searchWord }">
-			<input type="hidden" name="bno" id="bno" value="${board.bno }">
+			<input type="text" name="bno" id="bno" value="${board.bno }">
 			
 			<!-- 페이징 처리 하기 위해 있어야함 -->
 			<input type="hidden" id="page" name="page" value=1>

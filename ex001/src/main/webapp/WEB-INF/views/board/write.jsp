@@ -36,12 +36,19 @@ function requestAction(url){
 	writeForm.action=url;
 	writeForm.submit();
 }
+window.addEventListener('load', function() {
+	btnList.addEventListener('click',function(){
+		writeForm.action='/board/list';
+		writeForm.method ='get';
+		writeForm.submit();
+	});
+});
 </script>
  
  	<div class="bg-light p-5 rounded">
 	    <h1>게시판</h1>
 	    <p class="lead">부트스트랩을 이용한 게시판 만들기</p>
-	    <a class="btn btn-lg btn-primary" href="/board/list" role="button">리스트 &raquo;</a>
+	    <a class="btn btn-lg btn-primary" href="#" id="btnList" role="button">리스트 &raquo;</a>
 	</div>
 	  
 	  <p></p>

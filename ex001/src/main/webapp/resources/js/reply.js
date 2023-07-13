@@ -46,9 +46,21 @@ function fetchPost(url,obj,callback){
 }
 
 //덧글 조회 및 출력
-function getReplyList(){
+function getReplyList(page){
 	let bno = document.querySelector('#bno').value;
-	let page = document.querySelector('#page').value;
+	//let page = document.querySelector('#page').value;
+	
+	/**
+	 * falsey : false, 0, "", NaN, undefined, null
+	 * falsey한 값 이외의 값이 들어 있으면 true를 반환
+	 * 
+	 *  page에 입력된 값이없으면 1로 세팅
+	 * 	 * @param map
+	 * @returns
+	 */
+	if(!page){
+		page = 1;
+	}
 	
 	console.log("bno : "+bno);
 	console.log("page : "+page);
@@ -104,19 +116,20 @@ function replyView(map){
 						+`   <ul class="pagination justify-content-center">                      `
 						if(pageDto.prev){		
 			 pageBlock +=``
-						+`     <li class="page-item" onclick="getPage(${(pageDto.startNo-1)})">                                   `
-						+`       <a class="page-link">Previous</a>                               `
+						+`     <li class="page-item" onclick="getReplyList(${(pageDto.startNo-1)})">                                   `
+						+`       <a class="page-link disabled">Previous</a>                               `
 						+`     </li>                                                             `;
 						}
 	
 						for(i=pageDto.startNo; i <= pageDto.endNo; i++){
+							let active = pageDto.cri.pageNo == i ? 'active' : '';
 			 pageBlock +=``
-				 		+`     <li class="page-item"><a class="page-link" href="#" onclick="getPage(${i})">${i}</a></li>    `
+				 		+`     <li class="page-item"><a class="page-link ${active}" href="#" onclick="getReplyList(${i})">${i}</a></li>    `
 						};
 						
 						if(pageDto.next){
 			 pageBlock +=``
-				 		+`     <li class="page-item" onclick="getPage(${(pageDto.endNo+1)})">                                            `
+				 		+`     <li class="page-item" onclick="getReplyList(${(pageDto.endNo+1)})">                                            `
 						+`       <a class="page-link" href="#">Next</a>                          `
 						+`     </li>                                                             `
 						+`   </ul>                                                               `
@@ -204,8 +217,3 @@ function replyEditAction(rno){
 	
 }
 
-function getPage(page){
-	document.querySelector('#page').value = page;
-	getReplyList();
-	
-}

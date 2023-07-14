@@ -89,7 +89,7 @@
         z-index: 2;
       }
 
-	  #middle{
+	  #signUpPw{
 	    border-bottom-right-radius: 0;
         border-bottom-left-radius: 0;
         border-top-left-radius: 0;
@@ -97,17 +97,36 @@
         margin-bottom: -1px;
         
 	  }
-      #start  {
+      #signUpId  {
         margin-bottom: -1px;
         border-bottom-right-radius: 0;
         border-bottom-left-radius: 0;
       }
 	  
-      #end  {
+      #signUpPwCheck  {
         margin-bottom: 10px;
         border-top-left-radius: 0;
         border-top-right-radius: 0;
       }
+	  #signUpName{
+	   	border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        margin-bottom: -1px;
+	  }
+	  #id{
+	  	margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+	  }
+	  
+	  #pw{
+	   	margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+	  }
+	  
 
     </style>
 
@@ -129,19 +148,124 @@ window.addEventListener('load',function(){
 		}
 		
 		console.log(obj);
+		
+
 		//요청
 		fetchPost('/member/loginAction',obj,loginCheck)
-	})
+	});
 	
+	//로그인폼 보여주기
 	btlnSigninView.addEventListener('click',function(){
 		signupForm.style.display='none';
 		signinForm.style.display='';
 		
-	})
+	});
+	
+	//회원가입폼 보여주기
 	btlnSignupView.addEventListener('click',function(){
 		signupForm.style.display='';
 		signinForm.style.display='none';
-	})
+	});
+	
+						//blur = 포커스를 떠날때 이벤트를 발생시킴
+	signUpId.addEventListener('blur',function(){
+		//아이디 체크 -> 서버에 다녀와야함
+		
+		//아이디 미입력 처리
+		if(!signUpId.value){
+			//alert("아이디를 입력해주세요.")
+			msg1.innerHTML = "아이디를 입력해주세요.";
+			return;
+		}else{
+			// 파라메터 수집
+			let obj={
+						id	: document.querySelector('#signUpId').value
+					}
+			
+			console.log(obj);
+	
+			//요청
+			fetchPost('/member/idCheck',obj,idCheck)
+		}
+	});
+	
+	signUpPwCheck.addEventListener('blur',function(){
+		//비밀번호 체크 ->서버 안가도됨
+		let pw1 = document.querySelector('#signUpPw').value
+		let pw2 = document.querySelector('#signUpPwCheck').value
+		
+		if(pw1 == pw2){
+			//비밀번호 일치
+			document.querySelector('#pwCk').value=1;
+				
+		}else{
+			//비밀번호 불일치
+			alert("패스워드가 일치하지않습니다.")
+			signUpPw.value='';
+			signUpPwCheck.value='';
+			document.querySelector('#pwCk').value=0;
+			signUpPw.focus();
+		}
+	});
+	
+	btlnSignUp.addEventListener('click',function(e){
+		//기본이벤트 제거
+		e.preventDefault();
+		
+		let id =  signUpId.value;
+		let pw = signUpPw.value;
+		let pwCheck = signUpPwCheck.value;
+		let name = signUpName.value;
+		
+		if(!id){
+			msg1.innerHTML = "아이디를 입력해주세요.";
+			return;
+		}
+		if(!name){
+			msg1.innerHTML = "이름을 입력해주세요.";
+			return;
+		}	
+		if(!pw){
+			msg1.innerHTML = "비밀번호를 입력해주세요.";
+			return;
+		}
+		if(!pwCheck){
+			msg1.innerHTML = "비밀번호 확인을 입력해주세요.";
+			return;
+		}
+		if(idCk.value != 1){
+			msg1.innerHTML = "아이디 중복체크를 해주세요";
+			signUpId.focus();
+			return;
+		}
+		if(idCk.value != 1){
+			msg1.innerHTML = "비밀번호가 일치하는지 확인 해주세요";
+			signUpPwCheck.focus();
+			return;
+		}
+				
+		let obj = {
+					id 	 : id
+					,pw 	 : pw
+					,name : name
+					}
+		console.log(obj)
+		
+		//회원가입 요청
+		fetchPost('/member/signUp',obj,(map)=>{
+			if(map.result == 'success'){
+				console.log(map);
+				alert(map.msg);
+				//msg1.innerHTML = map.msg;
+				location.href = "/member/login";					
+			}else{
+				//alert(map.msg);
+				msg1.innerHTML = map.msg;
+			}
+		});
+		
+		
+	});
 	
 	
 });
@@ -154,9 +278,26 @@ function loginCheck(map){
 			
 	}else{
 		//로그인 실패 -> 메세지 처리
-		msg.innerHTML = map.msg;
+		msg.innerHTML= map.msg;
+		console.log(map.msg)
 	}
 }
+
+function idCheck(map){
+	if(map.result =='success'){
+		//아이디 중복확인 성공
+		document.querySelector('#idCk').value=1;
+		signUpName.focus();
+			
+	}else{
+		//아이디 중복확인 실패
+		document.querySelector('#idCk').value=0;
+		signUpId.value='';
+	}
+		//alert(map.msg)
+		msg1.innerHTML = map.msg;
+}
+
 
 
 </script>
@@ -166,16 +307,18 @@ function loginCheck(map){
 	    
 	<main class="form-signin w-100 m-auto">
 	
+	
+		<!-- 로그인 -->
 	  <form name="signinForm" method="post" action="/member/loginAction">
 	    <img class="mb-4" src="/resources/img/bootstrap-logo.svg" alt="" width="72" height="57">
-	    <h1 class="h3 mb-3 fw-normal">로그인 해주세요!</h1>
-		
+	    <h1 class="h3 mb-3 fw-normal" id="msg">로그인 해주세요!</h1>
+	    
 	    <div class="form-floating">
-	      <input type="text" class="form-control" name="id" id="id" >
+	      <input type="text" class="form-control" required name="id" id="id" >
 	      <label for="id">ID</label>
 	    </div>
 	    <div class="form-floating">
-	      <input type="password" class="form-control" name="pw" id="pw" >
+	      <input type="password" class="form-control" required name="pw" id="pw" >
 	      <label for="pw">Password</label>
 	    </div>
 	
@@ -185,45 +328,57 @@ function loginCheck(map){
 	      </label>
 	    </div>
 	    <button class="w-100 btn btn-lg btn-primary" type="submit" id="btlnLogin">로그인</button>
-	    <p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p>
+	    <p class="mt-5 mb-3 text-muted">&copy; 2023</p>
 	  </form>
+	  <!-- 로그인 끝-->
 	  
 	  
+	  
+	  
+	  	<!-- 회원가입 -->
 	  <form name="signupForm" style='display:none'>
+	  		<!-- ID / PW 체크 결과를  가져가야하는 값 -->
+	      <input  type="text" class="form-control" value="0" name="idCk"  id="idCk" >
+	      <input  type="text" class="form-control" value="0" name="pwCk"  id="pwCk" >
+	  
 	    <img class="mb-4" src="/resources/img/bootstrap-logo.svg" alt="" width="72" height="57">
-	    <h1 class="h3 mb-3 fw-normal">로그인 해주세요!</h1>
+	    <h1 class="h3 mb-3 fw-normal" id="msg1">로그인 해주세요!</h1>
 		
 	    <div class="form-floating">
-	      <input  type="text" class="form-control" name="id"  id="start" >
-	      <label for="start">ID</label>
+	      <input  type="text" class="form-control" required name="id"  id="signUpId" >
+	      <label for="signUpId">ID</label>
 	    </div>
 	    <div class="form-floating">
-	      <input type="password" class="form-control" name="pw" id="middle" >
-	      <label for="middle">Password</label>
+	      <input type="text" class="form-control" required name="name" id="signUpName" >
+	      <label for="signUpName">NickName</label>
 	    </div>
 	    <div class="form-floating">
-	      <input  type="password" class="form-control" name="pwCheck"  id="end" >
-	      <label for="end">PasswordCheck</label>
+	      <input type="password" class="form-control" required name="pw" id="signUpPw" >
+	      <label for="signUpPw">Password</label>
+	    </div>
+	    <div class="form-floating">
+	      <input  type="password" class="form-control" required name="pwCheck"  id="signUpPwCheck" >
+	      <label for="signUpPwCheck">PasswordCheck</label>
 	    </div>
 	
 	    <div class="checkbox mb-3">
-	      <label>
-	        <input type="checkbox" value="remember-me"> Remember me
-	      </label>
 	    </div>
 	    <button class="w-100 btn btn-lg btn-primary" type="submit" id="btlnSignUp">회원가입</button>
-	    <p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p>
+	    <p class="mt-5 mb-3 text-muted">&copy; 2023</p>
 	  </form>
+	  <!-- 회원가입 끝 -->
 	  
+	  
+	  <!-- 회원가입 로그인 버튼 -->
 	    <div class="d-grid gap-2 d-md-block">
 	    	<button class="btn btn-lg btn-primary btn-sm" type="button" id="btlnSigninView" >로그인</button>
 		    <button class="btn btn-lg btn-primary btn-sm" type="button" id="btlnSignupView" >회원가입</button>
 		</div>
-	  
+	  <!-- 회원가입 로그인 버튼 끝 -->
 
 	</main>
 
-
+	<!-- 부트스트랩 스크립트는 body 닫히기전에 선언해야함 -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>  
   </body>
 </html>

@@ -6,10 +6,25 @@
 	
 	<select id="login" resultType="com.momo.vo.Member">
 	
-		select * from member where id=#{id} and pw=#{pw}
+		select * from member where id=#{id}
 	
 	</select>
 	
+	<insert id="signUp">
+		insert into member (id, pw, name)
+    		values (#{id},#{pw},#{name})
+	</insert>
 	
+	<!-- 아이디체크이기때문에 1이면 조회가 됐다는것 = 중복아이디라는것
+			decode를 사용하여 반환값을 반대로 적용해줌 -->
+	<select id="idCheck" resultType="int">
+			select count(*)
+			from member
+			where id=#{id}
+	
+	</select>
+	
+
 </mapper>
+
 

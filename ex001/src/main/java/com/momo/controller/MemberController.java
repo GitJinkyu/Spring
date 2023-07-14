@@ -46,9 +46,9 @@ public class MemberController extends CommonRestController{
 			session.setAttribute("member", member);
 			session.setAttribute("userId", member.getId());
 			
-			return responseMap(1, "로그인");
+			return responseMap(REST_SUCCESS, "로그인 되었습니다.");
 		}else {
-			return responseMap(0, "로그인");
+			return responseMap(REST_FAIL, "아이디와 비밀번호를 확인해주세요");
 			
 		}
 	}
@@ -62,6 +62,38 @@ public class MemberController extends CommonRestController{
 	    
 	    return "redirect:/member/login";
 	}
+
+	@PostMapping("idCheck")
+	public @ResponseBody Map<String, Object> idCheck(@RequestBody Member member){
+		
+		System.out.println("id : " + member.getId());
+		
+		int res = service.idCheck(member);
+		
+		if(res == 0 ) {
+			return responseMap(REST_SUCCESS, "아이디 중복체크 성공");
+		}else {
+			return responseMap(REST_FAIL, "중복된 아이디입니다.");
+		}
+	}
+	
+	@PostMapping("signUp")
+	public @ResponseBody Map<String, Object> signUp(@RequestBody Member member){
+		
+		int res = service.signUp(member);
+		try {
+			if(res > 0 ) {
+				return responseMap(REST_SUCCESS, "회원가입을 성공하였습니다.");
+			}else {
+				return responseMap(REST_FAIL, "회원가입을 실패하였습니다.");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return responseMap(REST_FAIL, "회원 등록중 에러가 발생하였습니다.");
+		}
+	}
+	
 
 	
 	

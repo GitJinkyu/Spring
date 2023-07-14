@@ -13,6 +13,8 @@ public class CommonRestController {
 	private final String REST_EDIT = "수정";
 	private final String REST_DELETE = "삭제";
 	private final String REST_SELECT = "조회";
+	protected final String REST_SUCCESS = "success";
+	protected final String REST_FAIL = "fail";
 
 	/**
 	 * 입력 ,수정 ,삭제의 경우 int 값을 반환한다.
@@ -54,6 +56,18 @@ public class CommonRestController {
 		map.put("list",list);
 		map.put("pageDto",pageDto);
 		return map;
+	}
+	
+	public Map<String, Object> responseMap(String result,String msg){
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+
+		map.put("result", result);
+		map.put("msg",msg);
+
+		return map;
+		
 	}
 	
 }

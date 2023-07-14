@@ -13,4 +13,8 @@ public interface MemberService {
 
 	public Member login(Member member);
 	
+	public int signUp(Member member);
+	
+	public int idCheck(Member member);
+
 }

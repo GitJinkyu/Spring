@@ -35,6 +35,7 @@
 
 <script type="text/javascript">
 
+
 //인클루드 헤더안에 window.onload가 있어서 여기서 또 onload를 쓰면 충돌남
 //window.addEventListener('load', function()를 사용
 window.addEventListener('load', function() {
@@ -62,7 +63,8 @@ window.addEventListener('load', function() {
 	getReplyList();
 });
 
-
+var userId = "${sessionScope.userId}"; // userId 변수 선언
+var writerId= document.querySelector('#writer').value;
 </script>
 <main class="container">
 	 	<div class="bg-light p-5 rounded">
@@ -113,7 +115,12 @@ window.addEventListener('load', function() {
 			</div>
 			
 			<div class="d-grid gap-2 d-md-flex justify-content-md-center">
-				<button type="button" id="btnEdit" class="btn btn-primary btn-lg">수정</button>
+				 
+				<%-- 세션${sessionScope.userId } 도큐멘트 writerId 
+				세션아이디랑 글쓴이 아이디 비교해서 수정버튼 나와야함 --%>
+				  <button type="button" id="btnEdit" class="btn btn-primary btn-lg">수정</button>
+				
+
 				<button type="button" id="btnDelete" class="btn btn-primary btn-lg">삭제</button>
 			</div>
 			

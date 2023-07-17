@@ -77,7 +77,7 @@ window.addEventListener('load', function() {
 		
 		<div class="mb-3">
 			<label for="writer" class="form-label">작성자</label>
-		    <input name="writer" type="text" class="form-control" id="writer" value="${board.writer }">
+		    <input name="writer" type="text" class="form-control" id="writer" value="${sessionScope.userId }">
 		</div>
 		
 		<div class="d-grid gap-2 d-md-flex justify-content-md-center">

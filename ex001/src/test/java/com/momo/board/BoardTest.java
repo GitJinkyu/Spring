@@ -125,4 +125,11 @@ public class BoardTest {
 		log.info("TotalCnt = "+res);
 	}
 	
+	
+	@Test
+	public void updateReplyCnt() {
+		int res = boardMapper.updateReplyCnt(181, 1);
+		
+		assertEquals(1, res);
+	}
 }

@@ -137,7 +137,7 @@
 
 <script>
 window.addEventListener('load',function(){
-	
+
 	btlnLogin.addEventListener('click',function(e){
 		//기본이벤트 제거
 		e.preventDefault();
@@ -274,7 +274,7 @@ function loginCheck(map){
 	
 	if(map.result =='success'){
 		//로그인 성공 -> 게시판 리스트 화면으로 이동
-		location.href = "/board/list";
+		location.href = map.url;
 			
 	}else{
 		//로그인 실패 -> 메세지 처리
@@ -312,6 +312,7 @@ function idCheck(map){
 	  <form name="signinForm" method="post" action="/member/loginAction">
 	    <img class="mb-4" src="/resources/img/bootstrap-logo.svg" alt="" width="72" height="57">
 	    <h1 class="h3 mb-3 fw-normal" id="msg">로그인 해주세요!</h1>
+	    <div>${param.msg }</div>
 	    
 	    <div class="form-floating">
 	      <input type="text" class="form-control" required name="id" id="id" >

@@ -2,6 +2,7 @@ package com.momo.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -26,4 +27,12 @@ public interface BoardService {
 	public int update(BoardVO boardvo);
 	
 	public int getTotalCnt(Criteria cri);
+	
+	/**
+	 * 매개변수 두개부터는 꼭 @Param 어노테이션 붙여야함 !!!
+	 * @param bno
+	 * @param amount
+	 * @return
+	 */
+	public int updateReplyCnt(@Param("bno") int bno,@Param("amount") int amount);
 }

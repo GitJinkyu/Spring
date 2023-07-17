@@ -25,4 +25,6 @@ public interface ReplyMapper {
 	public int update(ReplyVO vo);
 	
 	public int totalCnt(int bno);
+	
+	public ReplyVO getOne(int rno);
 }

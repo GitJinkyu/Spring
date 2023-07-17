@@ -1,5 +1,7 @@
 package com.momo.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,8 @@ public class MemberServiceImpl implements MemberService {
 			
 			//비밀번호가 일치할 경우 member객체를 반환
 			if(res) {
+				//비밀번호까지 일치하는 인증된 유저일 경우 권한조회후 role을 멤버객체에 저장해줌
+				member.setRole_id(memberMapper.getMemberRole(member.getId()));
 				return member;
 			}
 		}
@@ -44,6 +48,12 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int idCheck(Member member) {
 		return memberMapper.idCheck(member);
+	}
+
+	@Override
+	public List<String> getMemberRole(String id) {
+	
+		return memberMapper.getMemberRole(id);
 	}
 
 }

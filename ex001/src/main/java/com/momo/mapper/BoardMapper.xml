@@ -87,6 +87,15 @@
 	<include refid="criteria"></include>
 	</select>
 	
+	<update id="updateReplyCnt">
+    update tbl_board set replycnt = replycnt + #{amount} where bno = #{bno}
+  	</update>
+	
+	
+	
+	
+	
+	
 	
 	<!-- 
 		반복되는 쿼리를 미리 작성해 놓고 재활용 합니다

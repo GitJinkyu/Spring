@@ -2,6 +2,7 @@ package com.momo.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import com.momo.vo.BoardVO;
@@ -25,4 +26,6 @@ public interface BoardMapper {
 	public int update(BoardVO boardvo);
 	
 	public int getTotalCnt(Criteria cri);
+	
+	public int updateReplyCnt(@Param("bno") int bno,@Param("amount") int amount);
 }

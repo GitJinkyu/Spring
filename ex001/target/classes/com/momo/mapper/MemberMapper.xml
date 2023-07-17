@@ -24,6 +24,11 @@
 	
 	</select>
 	
+	<!-- 멤버 권한 조회 -->
+	<select id="getMemberRole" resultType="String">
+		select role_id from memberrole where id=#{id}
+	</select>
+	
 
 </mapper>
 

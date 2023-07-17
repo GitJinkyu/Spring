@@ -2,6 +2,7 @@ package com.momo.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -64,7 +65,7 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public int insert(BoardVO boardvo) {
-	
+
 		return  boardMapper.insert(boardvo);
 	}
 
@@ -95,6 +96,12 @@ public class BoardServiceImpl implements BoardService{
 	public int getTotalCnt(Criteria cri) {
 		return  boardMapper.getTotalCnt(cri);
 		
+	}
+
+	@Override
+	public int updateReplyCnt(int bno,int amount) {
+		
+		return boardMapper.updateReplyCnt(bno, amount);
 	}
 
 

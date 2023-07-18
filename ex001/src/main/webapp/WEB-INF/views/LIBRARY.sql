@@ -217,9 +217,86 @@ foreign key (bno)  references  tbl_board (bno);
 
 insert into tbl_reply (rno, bno, reply, replyer)
     values (seq_reply.nextval,148,'댓글입니다','댓글작성자입니다');
-    
+insert into tbl_reply (rno, bno, reply, replyer)
+    values (seq_reply.nextval,148,'댓글입니다','댓글작성자입니다');
+    insert into tbl_reply (rno, bno, reply, replyer)
+    values (seq_reply.nextval,148,'댓글입니다','댓글작성자입니다');
+    insert into tbl_reply (rno, bno, reply, replyer)
+    values (seq_reply.nextval,148,'댓글입니다','댓글작성자입니다');
+    insert into tbl_reply (rno, bno, reply, replyer)
+    values (seq_reply.nextval,148,'댓글입니다','댓글작성자입니다');
+    insert into tbl_reply (rno, bno, reply, replyer)
+    values (seq_reply.nextval,148,'댓글입니다','댓글작성자입니다');
+    insert into tbl_reply (rno, bno, reply, replyer)
+    values (seq_reply.nextval,148,'댓글입니다','댓글작성자입니다');
+    insert into tbl_reply (rno, bno, reply, replyer)
+    values (seq_reply.nextval,148,'댓글입니다','댓글작성자입니다');
+    insert into tbl_reply (rno, bno, reply, replyer)
+    values (seq_reply.nextval,148,'댓글입니다','댓글작성자입니다');
+    insert into tbl_reply (rno, bno, reply, replyer)
+    values (seq_reply.nextval,148,'댓글입니다','댓글작성자입니다');
     
     select rno,bno,reply,replyer,to_char(replyDate,'yyyy-MM-dd')replyDate ,updateDate
  	from tbl_reply 
  	where bno=148
- 	order by rno desc
+ 	order by rno desc;
+    
+    
+    select * from member where id='guest' and pw='1234';
+    
+    insert into member (id, pw, name) values ('test1','1234','name'); 
+    
+    select count(*)
+			from member
+			where id='test1';
+            
+    select decode(count(*),0,1,0)
+			from member
+			where id='guest';
+            
+CREATE TABLE TBL_LOG(
+    classname varchar2(100)
+    ,methodname varchar2(100)
+    ,params varchar2(1000)
+    ,errmsg varchar2(2000)
+    ,regdate date
+);          
+
+create table MemberRole(
+    id varchar2(20)
+    ,role_id varchar2(20)
+);
+
+--댓글수 컬럼 추가
+alter table tbl_board add (replycnt number default 0 );
+
+--댓글 수 컬럼 업데이트
+update tbl_board set replycnt = (select count(rno) from tbl_reply where tbl_reply.bno=tbl_board.bno);
+
+
+//파일업로드 테이블
+create table tbl_attach ( 
+  uuid varchar2(100) not null,
+  uploadPath varchar2(200) not null,
+  fileName varchar2(100) not null, 
+  filetype char(1) default 'I',
+  bno number(10,0)
+);
+ 
+alter table tbl_attach add constraint pk_attach primary key (uuid); 
+ 
+alter table tbl_attach add constraint fk_board_attach foreign key (bno) references tbl_board(bno);
+
+
+--컬럼 연결해서 파일경로 조회하기
+select t.*
+				,uploadpath||uuid||'_'||filename savePath
+				,'s_'||uploadpath||uuid||'_'||filename s_savePath
+from tbl_attach t
+where bno=202;
+
+SELECT t.*,
+       uploadpath || uuid || '_' || filename AS savePath,
+       DECODE(filetype, 'I', 's_' || uploadpath || uuid || '_' || filename, NULL) AS s_savePath
+FROM tbl_attach t
+WHERE bno = #{bno};

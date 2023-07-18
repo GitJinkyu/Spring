@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper의 namespace속성은 연결할 mapper의 interface 풀 경로로 작성 -->
+<mapper namespace="com.momo.mapper.FileuploadMapper">
+		
+		<select id="getList" resultType="com.momo.vo.FileuploadVO">
+		SELECT t.*,
+		       uploadpath || uuid || '_' || filename AS savePath,
+		       DECODE(filetype, 'I', 's_' || uploadpath || uuid || '_' || filename, 'NO_image') AS s_savePath
+		FROM tbl_attach t
+		WHERE bno = #{bno}
+		</select>
+		
+		<insert id="insert">
+		insert into tbl_attach (UUID, UPLOADPATH, FILENAME, FILETYPE, BNO) 
+		values (#{uuid},#{uploadpath},#{filename},#{filetype},#{bno})
+		</insert>
+
+
+
+
+
+
+</mapper>

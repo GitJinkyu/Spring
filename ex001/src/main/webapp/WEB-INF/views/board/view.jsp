@@ -21,7 +21,7 @@
     <!-- CSS -->
 	<link href="/resources/css/style.css" rel="stylesheet">
 	
-	<!-- JS -->
+	<!--댓글창 JS -->
 	<script src="/resources/js/reply.js"></script>
 
 
@@ -40,15 +40,23 @@
 //window.addEventListener('load', function()를 사용
 window.addEventListener('load', function() {
 	
-	btnEdit.addEventListener('click',function(){
-		viewForm.action='/board/write';
-		viewForm.submit();
-	});
+	var btnEdit = document.getElementById("btnEdit");
+	var btnDelete = document.getElementById("btnDelete");
+	//수정및 삭제 버튼이 생길때만(로그인아이디와 작성자 아이디가 같을때만)이벤트 달아주기
+	if (btnEdit) {
+		btnEdit.addEventListener('click',function(){
+			viewForm.action='/board/write';
+			viewForm.submit();
+		});
+	}
 	
-	btnDelete.addEventListener('click',function(){
-		viewForm.action='/board/delete';
-		viewForm.submit();
-	});
+	if(btnDelete){
+		btnDelete.addEventListener('click',function(){
+			viewForm.action='/board/delete';
+			viewForm.submit();
+		});
+	}
+	
 	
 	btnList.addEventListener('click',function(){
 		viewForm.action='/board/list';
@@ -63,8 +71,8 @@ window.addEventListener('load', function() {
 	getReplyList();
 });
 
-var userId = "${sessionScope.userId}"; // userId 변수 선언
-var writerId= document.querySelector('#writer').value;
+//외부 js에서 ${sessionScope.userId}를 가져다 쓰기 위해서 전역 변수로 선언해준다
+var userId = "${sessionScope.userId}"; // userId 전역변수 선언
 </script>
 <main class="container">
 	 	<div class="bg-light p-5 rounded">
@@ -114,15 +122,13 @@ var writerId= document.querySelector('#writer').value;
 			  <textarea name="content" class="form-control" id="content" rows="3" readonly>${board.content }</textarea>
 			</div>
 			
-			<div class="d-grid gap-2 d-md-flex justify-content-md-center">
-				 
-				<%-- 세션${sessionScope.userId } 도큐멘트 writerId 
-				세션아이디랑 글쓴이 아이디 비교해서 수정버튼 나와야함 --%>
-				  <button type="button" id="btnEdit" class="btn btn-primary btn-lg">수정</button>
-				
-
+			<!-- 로그인 세션 아이디와 작성자 아이디가 같을 경우에만 수정 및 삭제 버튼 생성 -->
+			<c:if test="${sessionScope.userId eq board.writer}">
+			<div class="d-grid gap-2 d-md-flex justify-content-md-center">				 
+				<button type="button" id="btnEdit" class="btn btn-primary btn-lg">수정</button>
 				<button type="button" id="btnDelete" class="btn btn-primary btn-lg">삭제</button>
 			</div>
+			</c:if>
 			
 		</form>
 		<br>
@@ -134,6 +140,7 @@ var writerId= document.querySelector('#writer').value;
 		<!-- 댓글 들어갈 자리 -->
 		<div id="replyDiv">
 		</div>
+		<!-- 댓글 들어갈 자리 끝-->
 	</div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>

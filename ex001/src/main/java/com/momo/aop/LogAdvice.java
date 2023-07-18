@@ -34,6 +34,25 @@ public class LogAdvice {
 	 * 	로깅, 보안, 트랜젝션 관리등
 	 * 	애플리케이션에서 공통적으로 처리해야 하는 기능
 	 * 	오류발생시 데이터베이스에 저장
+	 * 
+	 * Aspect
+	 * 		부가적인 관심사를 모듈화한 단위
+	 * 		(Advice를 그룹화)Cross Concern : 횡단관심사
+	 * 		주 업무로직 이외의 부가적인 기능을 의미
+	 * 
+	 * Advice
+	 * 		부가적인 관심사
+	 *  
+	 * Pointcut
+	 * 		부가기능이 적용되는 지점
+	 * 
+	 * Target
+	 * 		핵심 기능을 구현한 객체
+	 * 		(Core Concern: 핵심관심사)
+	 * 
+	 * Proxy
+	 * 		Target + Advice
+	 * 
 	 */
 	
 	/**
@@ -70,32 +89,33 @@ public class LogAdvice {
 	 * 
 	 * 		주업무로직을 실행하기위해 JoinPoint의 하위 클래스인
 	 * 		ProceedingJoinPoint타입의 파라미터를 필수적으로 선언해야함
+	 * 		ProceedingJoinPoint를 이용해 타겟메서드의 실행 결과를 반환한다!!
 	 * 
 	 * @param pjp
 	 * @return
 	 */
-	@Around("execution(* com.momo.service.Board*.*(..))")
-	public Object logTime(ProceedingJoinPoint pjp) {
-		
-		StopWatch stopWatch = new StopWatch();
-		stopWatch.start();
-		
-		Object res = "";
-		// 주 업무로직 실행(타겟 메서드의 실생시점을 정할 수 있다.)
-		try {
-			res = pjp.proceed();
-			
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		
-		stopWatch.stop();
-		
-		log.info(pjp.getTarget() +"."+ pjp.getSignature().getName());
-		log.info("수행시간 : " +stopWatch.getTotalTimeMillis()+"(ms)초");
-		
-		return res;
-	}
+//	@Around("execution(* com.momo.service.Board*.*(..))")
+//	public Object logTime(ProceedingJoinPoint pjp) {
+//		
+//		StopWatch stopWatch = new StopWatch();
+//		stopWatch.start();
+//		
+//		Object res = "";
+//		// 주 업무로직 실행(타겟 메서드의 실생시점을 정할 수 있다.)
+//		try {
+//			res = pjp.proceed();
+//			
+//		} catch (Throwable e) {
+//			e.printStackTrace();
+//		}
+//		
+//		stopWatch.stop();
+//		
+//		log.info(pjp.getTarget() +"."+ pjp.getSignature().getName());
+//		log.info("수행시간 : " +stopWatch.getTotalTimeMillis()+"(ms)초");
+//		
+//		return res;
+//	}
 	
 	@Autowired
 	LogService logService;

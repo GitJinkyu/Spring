@@ -27,7 +27,7 @@ import net.coobird.thumbnailator.Thumbnails;
 
 @Controller
 @Log4j
-public class FileUploadController {
+public class FileUploadController extends CommonRestController{
 	
 	@Autowired
 	FileuploadService service;
@@ -51,87 +51,27 @@ public class FileUploadController {
 	 * @return
 	 */
 	@PostMapping("/file/fileUploadAction")
-	public String fileUploadAction(List<MultipartFile> files, int bno ,RedirectAttributes rttr) {
+	public  String fileUploadAction(List<MultipartFile> files, int bno ,RedirectAttributes rttr) {
 		
-		int insertRes = 0;
-		for(MultipartFile file : files) {
-			
-			//continue를 걸어주는 이유는
-			//jsp에서 input type:file 요소가 여러개일 경우
-			//선택된 파일이 없는 경우 다음 파일로 이동
-			if(file.isEmpty()) {
-				continue;
-			}
-			log.info("getOriginalFilename: "+file.getOriginalFilename());
-			log.info("getName: "+file.getName()); //파일 이름이 아닌 jsp에서 input요소의 name
-			log.info("getSize: "+file.getSize());
-			
-			try {
-				//UUID
-				/**
-				 * 소프트웨어 구축에 쓰이는 식별자 표준 
-				 * 식별자:중복되지않는 값
-				 * 파일이름이 중복되어 파일이 소실되지 않도록 파일이름에 uuid를 붙여서 저장
-				 */
-				UUID uuid = UUID.randomUUID();
-				String saveFileName = uuid + "_" +file.getOriginalFilename();
-				
-				//dir
-				//c:/upload/2023/07/18/
-				// 			년/월/일
-				File sFile = new File(ATTACHES_DIR
-												+getFolder() //경로 2023\07\18\
-												+saveFileName);
-				
-				//file(원본파일)을 sFile(저장 대상 파일)에 저장
-				file.transferTo(sFile);
-				
-				FileuploadVO vo = new FileuploadVO();
-
-				//주어진 파일의 Mime 유형을 확인
-				String contentType =
-									Files.probeContentType(sFile.toPath());
-				
-				//Mime타입을 확인하여 이미지인 경우 썸네일을 생성
-				if(contentType != null && contentType.startsWith("image")) {
-					//파일타입 변경
-					vo.setFiletype("I");
-					//썸네일  저장 경로
-					String thumbnail = ATTACHES_DIR+getFolder()+"s_"+saveFileName;
-					
-					//썸네일 생성
-									  //원본파일, 크기 ,저장될 경로
-					Thumbnails.of(sFile).size(100, 100).toFile(thumbnail);
-					
-				}else {
-					vo.setFiletype("F");
-				}
-				vo.setBno(bno);
-				vo.setFilename(file.getOriginalFilename());
-				vo.setUploadpath(getFolder());
-				vo.setUuid(uuid.toString());
-				
-				int res = service.insert(vo);
-				
-				if(res>0) {
-					insertRes++;
-				}
-				
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-				
-			
-			
-		}
+		
+		int insertRes = fileupload(files,bno);
 		
 		String msg = insertRes + "건 저장 되었습니다.";
 		rttr.addAttribute("msg",msg);
 		
 		return "redirect:/file/fileupload";
 		
+	}
+	
+	@PostMapping("/file/fileUploadActionFetch")
+	public @ResponseBody Map<String,Object> fileUploadActionFetch(List<MultipartFile> files, int bno) {
+		
+		log.info("fileUploadActionFetch");
+		int insertRes = fileupload(files,bno);
+		log.info("업로드 건수 : " + insertRes);
+
+		return responseMap("sucess", insertRes + "건 저장되었습니다.");
+
 	}
 	
 	
@@ -170,6 +110,82 @@ public class FileUploadController {
 		return uploadPath;
 	}
 	
-
+	
+	public int fileupload(List<MultipartFile> files, int bno ) {
+		int insertRes = 0;
+		for(MultipartFile file : files) {
+					
+					//continue를 걸어주는 이유는
+					//jsp에서 input type:file 요소가 여러개일 경우
+					//선택된 파일이 없는 경우 다음 파일로 이동
+					if(file.isEmpty()) {
+						continue;
+					}
+					log.info("getOriginalFilename: "+file.getOriginalFilename());
+					log.info("getName: "+file.getName()); //파일 이름이 아닌 jsp에서 input요소의 name
+					log.info("getSize: "+file.getSize());
+					
+					try {
+						//UUID
+						/**
+						 * 소프트웨어 구축에 쓰이는 식별자 표준 
+						 * 식별자:중복되지않는 값
+						 * 파일이름이 중복되어 파일이 소실되지 않도록 파일이름에 uuid를 붙여서 저장
+						 */
+						UUID uuid = UUID.randomUUID();
+						String saveFileName = uuid + "_" +file.getOriginalFilename();
+						
+						//dir
+						//c:/upload/2023/07/18/
+						// 			년/월/일
+						File sFile = new File(ATTACHES_DIR
+														+getFolder() //경로 2023\07\18\
+														+saveFileName);
+						
+						//file(원본파일)을 sFile(저장 대상 파일)에 저장
+						file.transferTo(sFile);
+						
+						FileuploadVO vo = new FileuploadVO();
+		
+						//주어진 파일의 Mime 유형을 확인
+						String contentType =
+											Files.probeContentType(sFile.toPath());
+						
+						//Mime타입을 확인하여 이미지인 경우 썸네일을 생성
+						if(contentType != null && contentType.startsWith("image")) {
+							//파일타입 변경
+							vo.setFiletype("I");
+							//썸네일  저장 경로
+							String thumbnail = ATTACHES_DIR+getFolder()+"s_"+saveFileName;
+							
+							//썸네일 생성
+											  //원본파일, 크기 ,저장될 경로
+							Thumbnails.of(sFile).size(100, 100).toFile(thumbnail);
+							
+						}else {
+							vo.setFiletype("F");
+						}
+						vo.setBno(bno);
+						vo.setFilename(file.getOriginalFilename());
+						vo.setUploadpath(getFolder());
+						vo.setUuid(uuid.toString());
+						
+						int res = service.insert(vo);
+						
+						if(res>0) {
+							insertRes++;
+						}
+						
+					} catch (IllegalStateException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+	
+				}
+		return insertRes;
+	}
+	
+	
 
 }

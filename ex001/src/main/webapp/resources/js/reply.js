@@ -162,7 +162,7 @@ function replyWrite(){
 	//url : /reply/insert/
 	//ojb : JSON형식으로 전달할 데이터
 	//callback : 처리할때 호출할 콜백함수
-	//			*콜백함수를 넣을땐 함수의 이름만 넣는다 
+	//			*메서드로 짜놓은 fetch 메서드에선 콜백함수를 넣을때 함수의 이름만 넣는다 
 	//			 	뒤에 ()를 포함하면 함수가 바로실행이 되어버림
 	fetchPost('/reply/insert/',obj,replyRes)
 }

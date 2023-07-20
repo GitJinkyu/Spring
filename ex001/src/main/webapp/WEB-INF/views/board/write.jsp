@@ -50,7 +50,7 @@ window.addEventListener('load', function() {
  
  	<div class="bg-light p-5 rounded">
 	    <h1>게시판</h1>
-	    <p class="lead">부트스트랩을 이용한 게시판 만들기</p>
+	    <p class="lead">글쓰기 페이지</p>
 	    <a class="btn btn-lg btn-primary" href="#" id="btnList" role="button">리스트 &raquo;</a>
 	</div>
 	  

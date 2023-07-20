@@ -24,7 +24,7 @@
 
 
     
-<title>Insert title here</title>
+<title>글 작성</title>
 </head>
 
 <body>
@@ -34,7 +34,7 @@
 
 function requestAction(url){
 	writeForm.action=url;
-	writeForm.submit();
+	writeForm.submit(); 
 }
 window.addEventListener('load', function() {
 	btnList.addEventListener('click',function(){
@@ -43,7 +43,10 @@ window.addEventListener('load', function() {
 		writeForm.submit();
 	});
 });
+
 </script>
+
+
  
  	<div class="bg-light p-5 rounded">
 	    <h1>게시판</h1>
@@ -79,15 +82,20 @@ window.addEventListener('load', function() {
 			<label for="writer" class="form-label">작성자</label>
 		    <input name="writer" type="text" class="form-control" id="writer" value="${sessionScope.userId }">
 		</div>
+
+		<div class="mb-3">
+			<label for="files" class="form-label">첨부파일</label>
+		    <input name="files" type="file" class="form-control" id="files" >
+		</div>
 		
 		<div class="d-grid gap-2 d-md-flex justify-content-md-center">
 		
 		<c:choose>
 		  <c:when test="${empty board.bno}">
-			<button type="submit" class="btn btn-primary btn-lg" onclick="requestAction('/board/write')">글쓰기</button>			
+			<button type="button" class="btn btn-primary btn-lg" onclick="requestAction('/board/write')">글쓰기</button>			
 		  </c:when>
 		  <c:otherwise>
-			<button type="submit" class="btn btn-primary btn-lg" onclick="requestAction('/board/edit')">수정완료</button>
+			<button type="button" class="btn btn-primary btn-lg" onclick="requestAction('/board/edit')">수정완료</button>
 		  </c:otherwise>
 		</c:choose>
 			<button type="reset" class="btn btn-secondary btn-lg">초기화</button>

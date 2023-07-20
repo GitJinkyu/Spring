@@ -5,6 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<script src="/resources/js/fetch.js"></script>
 <script>
 window.addEventListener('load', function() {
 	
@@ -76,6 +78,11 @@ function checkExtension(fileName, fileSize){
 function fileuploadRes(map){
 	if(map.result == 'sucess'){
 		divFileuploadRes.innerHTML = map.msg;
+		getFileList()
+		
+	}else{
+		alert(map.msg);
+		getFileList()
 	}
 }
 
@@ -87,13 +94,38 @@ function getFileList(){
 		.then(response => response.json())
 		.then(map => viewFileList(map));
 }
+
+function FileDelete(e){
+	//e.data 값 가져오는법
+	console.log(e.dataset.bno,e.dataset.uuid,e.dataset.aaa)
+	
+	let bno = e.dataset.bno
+	let uuid = e.dataset.uuid
+	
+	//fetch요청
+	//jsp 자바스크립트에서 백틱쓰려면 변수앞에 \${} 역슬래쉬 붙여줘야함
+	//EL 표현식과 충돌나서 에러발생하는것
+	//*주석처리해도 변수 앞에 역슬래쉬 안붙이면 에러 뜸!!*
+	 fetchGet(`/file/delete/\${uuid}/\${bno}`, fileuploadRes); 
+	//fetchGet('/file/delete/'+uuid+'/'+bno+'', fileuploadRes);
+}
+
 function viewFileList(map){
 	console.log(map);
 	
 	let content = '';
 	if(map.list.length > 0 ){
 		map.list.forEach(function(item,index){
-			content += item.filename + '<br>'
+			let savePath = encodeURIComponent(item.savePath);
+
+			console.log('세이브 패스 여기다 -=>',savePath)
+			content +=''
+					+'<a href="/file/download?filename='+savePath+'">  '
+					+ item.filename
+					+'</a>'
+					+'<i class="fa-regular fa-trash-can" onclick="FileDelete(this)"		' 
+					+'data-bno="'+item.bno+'" data-uuid="'+item.uuid+'"></i>		'
+					+' <br>			';
 		})
 	}else{
 		content = '등록된 파일이 없습니다.';
@@ -130,5 +162,10 @@ function viewFileList(map){
 	
 	<button type="button" id="btnGetList">누르면 리스트가 조회되는 버튼</button>
 	<div id="divFileupload"></div>
+	
+	
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/ba30180671.js" crossorigin="anonymous"></script>
+	
 </body>
 </html>

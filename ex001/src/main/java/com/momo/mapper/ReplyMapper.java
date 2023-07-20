@@ -10,7 +10,8 @@ import com.momo.vo.ReplyVO;
 public interface ReplyMapper {
 	
 	/**
-	 * 매개변수가 두개 이상 전달되는 경우
+	 * .xml쿼리문에서 매개변수가 두개 이상 전달되는 경우
+	 *  vo객체를 쓰던가 아니면
 	 * 	Param 어노테이션을 사용
 	 * @param bno
 	 * @param cri

@@ -49,4 +49,14 @@ public class FileuploadTest {
 		mapper.getList(202);
 	}
 	
+	@Test
+	public void delete() {
+
+		int bno = 202;
+		String uuid = "20cc0294-b0e7-4ef1-adaf-f6020c2514fb";
+
+		
+		mapper.delete(bno,uuid);
+	}
+	
 }

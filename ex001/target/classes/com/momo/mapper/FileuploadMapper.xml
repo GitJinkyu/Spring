@@ -19,7 +19,14 @@
 		values (#{uuid},#{uploadpath},#{filename},#{filetype},#{bno})
 		</insert>
 
-
+		<!-- 쿼리문에서 #{}변수를 두개이상 받아야할 경우엔 무조건 @Param 이용해야함 -->
+		<delete id="delete">
+		delete
+		from tbl_attach
+		where bno=#{bno}
+		and	uuid=#{uuid}
+		
+		</delete>
 
 
 

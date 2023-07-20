@@ -2,6 +2,7 @@ package com.momo.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -10,7 +11,12 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +39,6 @@ public class FileUploadController extends CommonRestController{
 	FileuploadService service;
 	
 	@GetMapping("/file/fileupload")
-	
 	public void fileupload() {
 		
 	}
@@ -186,6 +191,64 @@ public class FileUploadController extends CommonRestController{
 		return insertRes;
 	}
 	
+	@GetMapping("/file/delete/{uuid}/{bno}")
+	public @ResponseBody Map<String,Object> delete(@PathVariable("uuid")String uuid,@PathVariable("bno")int bno){
+			
+		int res = service.delete(bno, uuid);
+		if(res > 0) {
+			
+			return responseDeleteMap(res);
+		}else {
+			
+			return responseDeleteMap(res);
+		}
+	}
 	
+	/**
+	 * 파일 다운로드
+	 * 컨텐츠 타입을 다운로드 받을수 있는 형식으로 지정하여 
+	 * 브라우저에서 파일을 다운로드 할수있게 처리
+	 * @param filename
+	 * @return
+	 */
+	@GetMapping("/file/download")
+	public ResponseEntity<byte[]> download(String filename){
+	
+		log.info("download file : " + filename);
+		HttpHeaders header = new HttpHeaders();
+		
+		File file = new File(ATTACHES_DIR + filename);
+		
+		System.out.println();
+		
+		if(file.exists()) {
+			//컨텐츠 타입을 지정
+			//APLLICATION_OCTET_STREAM : 이전 파일의 컨텐츠 유형
+			header.add("contentType", MediaType.APPLICATION_OCTET_STREAM.toString());
+			
+			//컨텐츠에 대한 추가설명 및 파일 이름 한글처리
+			try {
+				header.add("Content-Dispositon"
+								, "attachment; filename=\""
+								+ new String(filename.getBytes("UTF-8"),"ISO-8859-1")+"\"");
+				
+				return new ResponseEntity<>(FileCopyUtils.copyToByteArray(file),header,HttpStatus.OK);
+
+				
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+				
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+				
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+	}
 
 }

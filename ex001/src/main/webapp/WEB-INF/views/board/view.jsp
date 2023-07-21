@@ -67,9 +67,56 @@ window.addEventListener('load', function() {
 		replyWrite()
 	});
 	
+	//파일목록 조회 및 출력
+	getFileList();
 	//댓글목록 조회 및 출력
 	getReplyList();
 });
+
+
+
+function getFileList(){
+	///file/list/{bno}
+	
+	let bno = document.querySelector('#bno').value;
+	fetch('/file/list/'+bno)
+		.then(response => response.json())
+		.then(map => viewFileList(map));
+}
+
+
+function viewFileList(map){
+	console.log(map);
+	
+	let content = '';
+	if(map.list.length > 0 ){
+			content +=''
+					+'<div class="mb-3">                                              '
+					+'  <label for="content" class="form-label">첨부파일 목록</label> 	  '
+					+'  <div class="form-control" id="attachFile">                    '
+
+		
+		
+		
+		map.list.forEach(function(item,index){
+			let savePath = encodeURIComponent(item.savePath);
+
+			console.log('세이브 패스 여기다 -=>',savePath)
+			content +=''
+					+'<a href="/file/download?filename='+savePath+'">  '
+					+ item.filename
+					+'</a>'
+					+' <br>			';
+		})
+		
+			content +='  </div>                                                        '
+					+'</div>                                                          ';
+	}else{
+		content = '등록된 파일이 없습니다.';
+	}
+	
+	divFileupload.innerHTML = content;
+}
 
 //외부 js에서 ${sessionScope.userId}를 가져다 쓰기 위해서 전역 변수로 선언해준다
 var userId = "${sessionScope.userId}"; // userId 전역변수 선언
@@ -121,6 +168,12 @@ var userId = "${sessionScope.userId}"; // userId 전역변수 선언
 			  <label for="content" class="form-label">내용</label>
 			  <textarea name="content" class="form-control" id="content" rows="3" readonly>${board.content }</textarea>
 			</div>
+			
+			<!-- 파일 목록 출력할부분 -->
+			<div id="divFileupload">
+			</div>
+			
+			
 			
 			<!-- 로그인 세션 아이디와 작성자 아이디가 같을 경우에만 수정 및 삭제 버튼 생성 -->
 			<c:if test="${sessionScope.userId eq board.writer}">

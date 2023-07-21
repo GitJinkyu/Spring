@@ -10,6 +10,7 @@ import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.momo.service.BoardService;
@@ -70,7 +71,7 @@ public class BoardController {
 	@GetMapping("view")
 	public void getOne(Model model,BoardVO paramVO) {
 	
-		log.info("=========================");
+		log.info("------------------------------------------");
 		BoardVO board = boardService.getOne(paramVO.getBno());
 		model.addAttribute("board",board);
 	}
@@ -89,34 +90,51 @@ public class BoardController {
 	 *  addFlashAttribute : 세션에 저장후 페이지 전환
 	 */
 	@PostMapping("write")
-	public String writeAction(RedirectAttributes rttr ,BoardVO board,Model model) {
+	public String writeAction(RedirectAttributes rttr ,List<MultipartFile> files,BoardVO board,Model model) {
+		
 		log.info(board);
-		//board.getBno로 값을 가져오기 위해 insertSelectKey를 써야함
-		//시퀀스를 먼저 조회후 시퀀스 번호를 bno에 저장 하고 난 후에 실행함
-		int res = boardService.insertSelectKey(board);
-		System.out.println(res);
-		String msg = "";
 		
-		if(res>0) {
+		int res;
+		try {
+			//board.getBno로 값을 가져오기 위해 insertSelectKey를 써야함
+			//시퀀스를 먼저 조회후 시퀀스 번호를 bno에 저장 하고 난 후에 실행함
+			//게시물 등록 및 파일 첨부
+			res = boardService.insertSelectKey(board,files);
 			
-			msg = board.getBno()+"번 등록되었습니다.";
-		
-			//rttr.addAttribute는 
-			//url?msg=등록되었습니다 (쿼리스트링으로 전환됨. 화면에서 받을때 param.으로 받아야함)
-			//rttr.addAttribute("msg",msg);
+			System.out.println(res);
+			String msg = "";
 			
-			//세션영역에 잠시 저장 -> param. 안붙이고 msg로 호출 가능
-			//잠깐 쓰고 사라지기때문에 새로고침시 유지되지않음
-			rttr.addFlashAttribute("msg",msg);
+			if(res>0) {
+				
+				msg = board.getBno()+"번 등록되었습니다.";
 			
-			return "redirect:/board/list";
+				//rttr.addAttribute는 
+				//url?msg=등록되었습니다 (쿼리스트링으로 전환됨. 화면에서 받을때 param.으로 받아야함)
+				//rttr.addAttribute("msg",msg);
+				
+				//세션영역에 잠시 저장 -> param. 안붙이고 msg로 호출 가능
+				//잠깐 쓰고 사라지기때문에 새로고침시 유지되지않음
+				rttr.addFlashAttribute("msg",msg);
+				
+				return "redirect:/board/list";
+				
+			}else {
+				msg="등록중 오류가 발생하였습니다.";
+				model.addAttribute("msg",msg);
+				return "/board/message";
+			}
 			
-		}else {
-			msg="등록중 오류가 발생하였습니다.";
-			model.addAttribute("msg",msg);
+		} catch (Exception e) {
+			log.info(e.getMessage());
+			if(e.getMessage().indexOf("첨부파일")> -1) {
+				model.addAttribute("msg",e.getMessage());
+			}else {
+				model.addAttribute("msg","등록중 예외사항이 발생하였습니다.");	
+			}
+			e.printStackTrace();
 			return "/board/message";
 		}
-		
+				
 	}
 	
 	@GetMapping("edit")
@@ -127,9 +145,9 @@ public class BoardController {
 	}
 	
 	@PostMapping("edit")
-	public String editAction(Criteria cri,RedirectAttributes rttr ,BoardVO board,Model model) {
+	public String editAction(Criteria cri,RedirectAttributes rttr ,List<MultipartFile> files,BoardVO board,Model model) {
 		System.out.println("==========================================");
-		System.out.println("================포스트 에딧 진입=================");
+		System.out.println("================포스트 에딧 진입==============");
 		System.out.println("==========================================");
 		
 		/* 값 주고 받는 종류 차이를 알아야함
@@ -145,38 +163,50 @@ public class BoardController {
 		
 		log.info(board);
 
-		int res = boardService.update(board);
-		System.out.println(res);
-		String msg = "";
-		
-		if(res>0) {
+		int res;
+		try {
+			res = boardService.update(board,files);
+			System.out.println(res);
+			String msg = "";
 			
-			msg = board.getBno()+"번 수정되었습니다.";
-		
-			//rttr.addAttribute는 
-			//url?msg=등록되었습니다 (쿼리스트링으로 전환됨. 화면에서 받을때 param.으로 받아야함)
-			
-			//세션영역에 잠시 저장 -> param. 안붙이고 msg로 호출 가능
-			//잠깐 쓰고 사라지기때문에 새로고침시 유지되지않음
-			rttr.addFlashAttribute("msg",msg);
-			//rttr.addFlashAttribute("cri",cri);
-			
-			//검색키워드 페이지 유지하고 돌아가기 구현
-			//유지하기위해선 jsp에서 보낸 검색 및 페이지 정보 파라미터를 매개변수 cri로 받고 
-			//cri로 받은 파라미터를 다시 addAttribute에 저장해서 화면으로 보내줄때 사용
-			rttr.addAttribute("pageNo",cri.getPageNo());
-			rttr.addAttribute("searchField",cri.getSearchField());
-			rttr.addAttribute("searchWord",cri.getSearchWord());
-			
-			return "redirect:/board/view?bno="+board.getBno();
-			//return "redirect:/board/view?bno="+board.getBno()+"&pageNo="+cri.getPageNo()+"&searchField="+cri.getSearchField()+"&searchWord="+cri.getSearchWord();
-
-			//리턴 그냥 경로를 적으면 컨트롤을 거치지않고 해당 경로내의 .jsp를 바로 호출함
-			//return "/board/view";
-			
-		}else {
-			msg="수정중 오류가 발생하였습니다.";
-			model.addAttribute("msg",msg);
+			if(res>0) {
+				
+				msg = board.getBno()+"번 수정되었습니다.";
+				
+				//rttr.addAttribute는 
+				//url?msg=등록되었습니다 (쿼리스트링으로 전환됨. 화면에서 받을때 param.으로 받아야함)
+				
+				//세션영역에 잠시 저장 -> param. 안붙이고 msg로 호출 가능
+				//잠깐 쓰고 사라지기때문에 새로고침시 유지되지않음
+				rttr.addFlashAttribute("msg",msg);
+				//rttr.addFlashAttribute("cri",cri);
+				
+				//검색키워드 페이지 유지하고 돌아가기 구현
+				//유지하기위해선 jsp에서 보낸 검색 및 페이지 정보 파라미터를 매개변수 cri로 받고 
+				//cri로 받은 파라미터를 다시 addAttribute에 저장해서 화면으로 보내줄때 사용
+				rttr.addAttribute("pageNo",cri.getPageNo());
+				rttr.addAttribute("searchField",cri.getSearchField());
+				rttr.addAttribute("searchWord",cri.getSearchWord());
+				
+				return "redirect:/board/view?bno="+board.getBno();
+				//return "redirect:/board/view?bno="+board.getBno()+"&pageNo="+cri.getPageNo()+"&searchField="+cri.getSearchField()+"&searchWord="+cri.getSearchWord();
+				
+				//리턴 그냥 경로를 적으면 컨트롤을 거치지않고 해당 경로내의 .jsp를 바로 호출함
+				//return "/board/view";
+				
+			}else {
+				msg="수정중 오류가 발생하였습니다.";
+				model.addAttribute("msg",msg);
+				return "/board/message";
+			}
+		} catch (Exception e) {
+			log.info(e.getMessage());
+			if(e.getMessage().indexOf("첨부파일")> -1) {
+				model.addAttribute("msg",e.getMessage());
+			}else {
+				model.addAttribute("msg","등록중 예외사항이 발생하였습니다.");	
+			}
+			e.printStackTrace();
 			return "/board/message";
 		}
 	}

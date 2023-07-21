@@ -5,11 +5,14 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.momo.mapper.BoardMapper;
 import com.momo.vo.BoardVO;
 import com.momo.vo.Criteria;
+import com.momo.vo.FileuploadVO;
 import com.momo.vo.PageDto;
 
 
@@ -38,6 +41,9 @@ public class BoardServiceImpl implements BoardService{
 	
 	@Autowired
 	private BoardMapper boardMapper;
+	
+	@Autowired
+	private FileuploadService fileuploadservice;
 	
 	
 	
@@ -70,9 +76,17 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public int insertSelectKey(BoardVO boardvo) {
+	@Transactional(rollbackFor = Exception.class)
+	public int insertSelectKey(BoardVO boardvo,List<MultipartFile> files ) throws Exception {
 		
-		return boardMapper.insertSelectKey(boardvo);
+		//게시물 등록
+		int res = boardMapper.insertSelectKey(boardvo);
+		
+		//파일 첨부
+		fileuploadservice.fileupload(files,boardvo.getBno());
+		
+		
+		return res;
 	}
 
 	@Override
@@ -82,13 +96,35 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public int delete(int bno) {
+		//게시물을 삭제시 첨부된 파일이 있는 경우 오류가 발생
+		//첨부파일을 모두 삭제해야함 (또는 DB테이블 제약조건의 옵션을 변경해도된다.)
+
+		//첨부파일 리스트 조회 - fileuploadService
+		List<FileuploadVO> list = fileuploadservice.getList(bno);
+		int res = 0 ;
+		for(FileuploadVO vo : list) {
+			//리스트 돌면서 삭제 처리 - fileuploadService
+			res += fileuploadservice.delete(bno, vo.getUuid());
+			
+		}
+		
+		/* 2.댓글 리스트 삭제 추가해야함 */
+		//replyMapper.deleteReplyList(bno);
+		
+		//3.게시글 삭제
 		return boardMapper.delete(bno);
 		
 	}
 
 	@Override
-	public int update(BoardVO boardvo) {
-		return boardMapper.update(boardvo);
+	@Transactional(rollbackFor = Exception.class)
+	public int update(BoardVO boardvo, List<MultipartFile> files) throws Exception {
+		
+		int res = boardMapper.update(boardvo);
+		
+		fileuploadservice.fileupload(files, boardvo.getBno());
+		
+		return res;
 	
 	}
 

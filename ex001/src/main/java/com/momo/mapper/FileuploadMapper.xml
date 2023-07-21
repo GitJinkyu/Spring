@@ -9,7 +9,7 @@
 		<select id="getList" resultType="com.momo.vo.FileuploadVO">
 		SELECT t.*,
 		       uploadpath || uuid || '_' || filename AS savePath,
-		       DECODE(filetype, 'I', 's_' || uploadpath || uuid || '_' || filename, 'NO_image') AS s_savePath
+		       DECODE(filetype, 'I', uploadpath || 's_' || uuid || '_' || filename, 'NO_image') AS s_savePath
 		FROM tbl_attach t
 		WHERE bno = #{bno}
 		</select>
@@ -28,7 +28,14 @@
 		
 		</delete>
 
-
+		<select id="getOne" resultType="com.momo.vo.FileuploadVO">
+		SELECT t.*,
+		       uploadpath || uuid || '_' || filename AS savePath,
+		       DECODE(filetype, 'I', uploadpath ||'s_'|| uuid || '_' || filename, 'NO_image') AS s_savePath
+		FROM tbl_attach t
+		WHERE bno = #{bno}
+		  AND uuid = #{uuid} 
+		</select>
 
 
 </mapper>

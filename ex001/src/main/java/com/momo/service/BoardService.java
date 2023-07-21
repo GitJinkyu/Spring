@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.momo.mapper.BoardMapper;
 import com.momo.vo.BoardVO;
@@ -18,13 +19,13 @@ public interface BoardService {
 	
 	public int insert(BoardVO boardvo);
 		
-	public int insertSelectKey(BoardVO boardvo);
+	public int insertSelectKey(BoardVO boardvo, List<MultipartFile> files) throws Exception;
 	
 	public BoardVO getOne(int bno);
 	
 	public int delete(int bno);
 	
-	public int update(BoardVO boardvo);
+	public int update(BoardVO boardvo, List<MultipartFile> files) throws Exception;
 	
 	public int getTotalCnt(Criteria cri);
 	

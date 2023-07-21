@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.momo.vo.FileuploadVO;
 
@@ -21,5 +22,8 @@ public interface FileuploadService {
 	public int insert(FileuploadVO vo); 
 	
 	public int delete(int bno, String uuid);
+	
+	public int fileupload(List<MultipartFile> files, int bno ) throws Exception;
 
+	
 }

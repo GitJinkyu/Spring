@@ -21,7 +21,7 @@ public class ReplyServiceImpl implements ReplyService {
 	@Autowired
 	BoardMapper boardMapper;
 	
-	@Override						//매개변수에 @Param 지웠음
+	@Override						
 	public List<ReplyVO> getList(int bno,Criteria cri) {
 	
 		return replyMapper.getList(bno,cri);

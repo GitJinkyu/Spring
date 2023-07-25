@@ -2,6 +2,8 @@ package com.momo.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -20,5 +22,7 @@ public interface MemberService {
 	public int idCheck(Member member);
 	
 	public List<String> getMemberRole(String id);
+
+	public void naverLogin(HttpServletRequest request, Model model);
 
 }

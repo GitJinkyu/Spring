@@ -15,4 +15,5 @@ public interface MemberMapper {
 	
 	public List<String> getMemberRole(String id);
 	
+		
 }

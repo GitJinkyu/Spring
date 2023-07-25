@@ -18,23 +18,39 @@ import com.momo.service.MemberService;
 import com.momo.vo.Member;
 
 @Controller
-@RequestMapping("/member/*")
+//@RequestMapping("/member/*")
 public class MemberController extends CommonRestController{
 	
 	@Autowired
 	MemberService service;
 	
+	@GetMapping("/login/naver")
+	public void naverLogin() {
+		
+	}
+	
+	@GetMapping("/login/naver_callback")
+	public String naverLogin_callback(HttpServletRequest request,Model model) {
+		
+		service.naverLogin(request,model);
+		
+		
+		
+		return "/login/naver";
+		
+	}
+	
 	/**
 	 * 로그인 페이지로 이동
 	 * @return
 	 */
-	@GetMapping("login")
+	@GetMapping("/member/login")
 	public void login() {
 		
 	}
 	
 	
-	@PostMapping("loginAction")
+	@PostMapping("/member/loginAction")
 	public @ResponseBody Map<String,Object> loginAction(@RequestBody Member member, Model model,HttpSession session) {
 		
 		System.out.println("id : " + member.getId());
@@ -63,7 +79,7 @@ public class MemberController extends CommonRestController{
 		}
 	}
 	
-	@GetMapping("logout")
+	@GetMapping("/member/logout")
 	public String logout(HttpServletRequest request) {
 		
 	    // 세션 무효화
@@ -73,7 +89,7 @@ public class MemberController extends CommonRestController{
 	    return "redirect:/member/login";
 	}
 
-	@PostMapping("idCheck")
+	@PostMapping("/member/idCheck")
 	public @ResponseBody Map<String, Object> idCheck(@RequestBody Member member){
 		
 		System.out.println("id : " + member.getId());
@@ -87,7 +103,7 @@ public class MemberController extends CommonRestController{
 		}
 	}
 	
-	@PostMapping("signUp")
+	@PostMapping("/member/signUp")
 	public @ResponseBody Map<String, Object> signUp(@RequestBody Member member){
 		
 		int res = service.signUp(member);

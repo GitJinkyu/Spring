@@ -49,9 +49,9 @@ public class MemberTest {
 	@Test
 	public void testInsert() {
 		Member member =new Member();
-		member.setId("testf31");
+		member.setId("admin");
 		member.setPw(encoder.encode("1233"));
-		member.setName("name");
+		member.setName("관리자");
 		
 		int res = service.signUp(member);
 		

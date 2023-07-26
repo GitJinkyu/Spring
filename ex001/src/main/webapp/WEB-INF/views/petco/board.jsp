@@ -10,7 +10,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <title>Cyborg - Awesome HTML5 Template</title>
+    <title>반려동물 커뮤니티 사이트</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -59,28 +59,32 @@ https://templatemo.com/tm-579-cyborg-gaming
 
           <!-- ***** Featured Games Start ***** -->
           <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-12">
               <div class="featured-games header-text">
                 <div class="heading-section">
                   <h4><em>베스트</em> 게시글</h4>
                 </div>
                 <div class="owl-features owl-carousel">
-                  <div class="item">
+            <!------------------- 베스트 게시글 시작-------------------->
+            <%-- <c:forEach var="i" begin="1" end="10"> --%>
+				  <div class="item">
+				    <div class="thumb">
+				      <img src="/resources/assets/images/featured-01.jpg" alt="">
+				      <div class="hover-effect">
+				        <h6>2.4K Streaming</h6>
+				      </div>
+				    </div>
+				    <h4>CS-GO<br><span>249K Downloads</span></h4>
+				    <ul>
+				      <li><i class="fa fa-star"></i> 4.8</li>
+				      <li><i class="fa fa-download"></i> 2.3M</li>
+				    </ul>
+				  </div>
+			<%-- </c:forEach> --%>
+            <!------------------- 베스트 게시글  끝-------------------->
+                   <div class="item">
                     <div class="thumb">
-                      <img src="/resources/assets/images/img1.jpg" alt="">
-                      <div class="hover-effect">
-                        <h6>2.4K Streaming</h6>
-                      </div>
-                    </div>
-                    <h4>CS-GO<br><span>249K Downloads</span></h4>
-                    <ul>
-                      <li><i class="fa fa-star"></i> 4.8</li>
-                      <li><i class="fa fa-download"></i> 2.3M</li>
-                    </ul>
-                  </div>
-                  <div class="item">
-                    <div class="thumb">
-                      <img src="/resources/assets/images/featured-02.jpg" alt="">
+                      <img src="/resources/assets/images/featured-0.jpg" alt="">
                       <div class="hover-effect">
                         <h6>2.4K Streaming</h6>
                       </div>
@@ -93,7 +97,7 @@ https://templatemo.com/tm-579-cyborg-gaming
                   </div>
                   <div class="item">
                     <div class="thumb">
-                      <img src="/resources/assets/images/featured-03.jpg" alt="">
+                      <img src="/resources/assets/images/featured-0.jpg" alt="">
                       <div class="hover-effect">
                         <h6>2.4K Streaming</h6>
                       </div>
@@ -103,14 +107,15 @@ https://templatemo.com/tm-579-cyborg-gaming
                       <li><i class="fa fa-star"></i> 4.8</li>
                       <li><i class="fa fa-download"></i> 2.3M</li>
                     </ul>
-                  </div>
+                  </div> 
                 </div>
               </div>
             </div>
-            <div class="col-lg-4">
+            
+             <div class="col-lg-12">
               <div class="top-streamers">
                 <div class="heading-section">
-                  <h4><em>Top</em> Streamers</h4>
+                  <h4><em>일상</em> 게시글</h4>
                 </div>
                 <ul>
                   <li>

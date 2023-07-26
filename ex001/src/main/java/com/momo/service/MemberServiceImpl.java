@@ -69,6 +69,7 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Autowired
 	ApiExamMemberProfile apiExam;
+	
 	@Override
 	public void naverLogin(HttpServletRequest request, Model model) {
 		try {

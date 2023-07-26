@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper의 namespace속성은 연결할 mapper의 interface 풀 경로로 작성 -->
+<mapper namespace="com.momo.mapper.PetcoBoardMapper">
+	<select id="getList" resultType="com.momo.vo.PetcoBoardVO">
+		select bno,title,content,nickname,visitcount,DECODE(TRUNC(sysdate), TRUNC(regdate), TO_CHAR(regdate, 'HH24:MI:SS'), TO_CHAR(regdate, 'YYYY-MM-DD')) AS regdate, updatedate 
+		from pet_board
+		order by bno desc 
+	</select>
+
+
+</mapper>

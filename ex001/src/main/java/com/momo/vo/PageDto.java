@@ -25,16 +25,8 @@ public class PageDto {
 		//페이지 블록의 시작번호
 		this.startNo = this.endNo - 4;
 		
-		//총 게시물의 수를 페이지당 보여지는 게시물의 수로 나눠서 실제 끝 페이지 번호를 구함
+		//총 게시물의 수를 페이지당 보여지는 게시물의 수로 나눠서 실제 끝페이지 번호를 구함
 		realEnd = (int)Math.ceil((total*1.0)/cri.getAmount());
-		
-		//게시글이 없을때는 realEnd값이 0이되면서 페이지 끝을 누르면  예외발생
-		//realEnd 값을 1로 설정해서 1페이지로 계속 가도록 처리
-		if (realEnd <= 0) {
-		        realEnd = 1; // 최소한 1로 설정하거나 다른 값으로 설정할 수도 있습니다.
-		}
-		
-		
 		endNo = endNo > realEnd ? realEnd : endNo;
 		
 		prev = startNo > 1 ? true : false;
